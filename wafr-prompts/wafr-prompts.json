@@ -1,0 +1,133 @@
+{
+    "data": [
+        {
+            "wafr_lens": "AWS Well-Architected Framework",
+            "wafr_lens_alias": "wellarchitected",
+            "wafr_pillar": "Operational Excellence",
+            "wafr_pillar_id": 1,
+            "wafr_pillar_prompt": "Please answer the following questions for the Operational Excellence pillar of the Well-Architected Framework Review (WAFR).\nQuestions:\nOPS 1: How do you determine what your priorities are?\nOPS 2: How do you structure your organization to support your business outcomes?\nOPS 3: How does your organizational culture support your business outcomes?\nOPS 4: How do you implement observability in your workload?\nOPS 5: How do you reduce defects, ease remediation, and improve flow into production?\nOPS 6: How do you mitigate deployment risks?\nOPS 7: How do you know that you are ready to support a workload?\nOPS 8: How do you utilize workload observability in your organization?\nOPS 9: How do you understand the health of your operations?\nOPS 10: How do you manage workload and operations events?\nOPS 11: How do you evolve operations?"
+        },
+        {
+            "wafr_lens": "AWS Well-Architected Framework",
+            "wafr_lens_alias": "wellarchitected",
+            "wafr_pillar": "Security",
+            "wafr_pillar_id": 2,
+            "wafr_pillar_prompt": "Please answer the following questions for the Security pillar of the Well-Architected Framework Review (WAFR).\nQuestions:\nSEC 1: How do you securely operate your workload?\nSEC 2: How do you manage identities for people and machines?\nSEC 3: How do you manage permissions for people and machines?\nSEC 4: How do you detect and investigate security events?\nSEC 5: How do you protect your network resources?\nSEC 6: How do you protect your compute resources?\nSEC 7: How do you classify your data?\nSEC 8: How do you protect your data at rest?\nSEC 9: How do you protect your data in transit?\nSEC 10: How do you anticipate, respond to, and recover from incidents?\nSEC 11: How do you incorporate and validate the security properties of applications throughout the design, development, and deployment lifecycle?"
+        },
+        {
+            "wafr_lens": "AWS Well-Architected Framework",
+            "wafr_lens_alias": "wellarchitected",
+            "wafr_pillar": "Reliability",
+            "wafr_pillar_id": 3,
+            "wafr_pillar_prompt": "Please answer the following questions for the Reliability pillar of the Well-Architected Framework Review (WAFR).\nQuestions:\nREL 1: How do you manage service quotas and constraints?\nREL 2: How do you plan your network topology?\nREL 3: How do you design your workload service architecture?\nREL 4: How do you design interactions in a distributed system to prevent failures?\nREL 5: How do you design interactions in a distributed system to mitigate or withstand failures?\nREL 6: How do you monitor workload resources?\nREL 7: How do you design your workload to adapt to changes in demand?\nREL 8: How do you implement change?\nREL 9: How do you back up data?\nREL 10: How do you use fault isolation to protect your workload?\nREL 11: How do you design your workload to withstand component failures?\nREL 12: How do you test reliability?\nREL 13: How do you plan for disaster recovery (DR)?"
+        },
+        {
+            "wafr_lens": "AWS Well-Architected Framework",
+            "wafr_lens_alias": "wellarchitected",
+            "wafr_pillar": "Performance Efficiency",
+            "wafr_pillar_id": 4,
+            "wafr_pillar_prompt": "Please answer the following questions for the Performance efficiency pillar of the Well-Architected Framework Review (WAFR).\nQuestions:\nPERF 1: How do you select the appropriate cloud resources and architecture patterns for your workload?\nPERF 2: How do you select and use compute resources in your workload?\nPERF 3: How do you store, manage, and access data in your workload?\nPERF 4: How do you select and configure networking resources in your workload?\nPERF 5: What process do you use to support more performance efficiency for your workload?"
+        },
+        {
+            "wafr_lens": "AWS Well-Architected Framework",
+            "wafr_lens_alias": "wellarchitected",
+            "wafr_pillar": "Cost Optimization",
+            "wafr_pillar_id": 5,
+            "wafr_pillar_prompt": "Please answer the following questions for the Cost Optimization pillar of the Well-Architected Framework Review (WAFR).\nQuestions:\nCOST 1: How do you implement cloud financial management?\nCOST 2: How do you govern usage?\nCOST 3: How do you monitor your cost and usage?\nCOST 4: How do you decommission resources?\nCOST 5: How do you evaluate cost when you select services?\nCOST 6: How do you meet cost targets when you select resource type, size and number?\nCOST 7: How do you use pricing models to reduce cost?\nCOST 8: How do you plan for data transfer charges?\nCOST 9: How do you manage demand, and supply resources?\nCOST 10: How do you evaluate new services?\nCOST 11: How do you evaluate the cost of effort?"
+        },
+        {
+            "wafr_lens": "AWS Well-Architected Framework",
+            "wafr_lens_alias": "wellarchitected",
+            "wafr_pillar": "Sustainability",
+            "wafr_pillar_id": 6,
+            "wafr_pillar_prompt": "Please answer the following questions for the Sustainability pillar of the Well-Architected Framework Review (WAFR).\nQuestions:\nSUS 1: How do you select Regions for your workload?\nSUS 2: How do you align cloud resources to your demand?\nSUS 3: How do you take advantage of software and architecture patterns to support your sustainability goals?\nSUS 4: How do you take advantage of data management policies and patterns to support your sustainability goals?\nSUS 5: How do you select and use cloud hardware and services in your architecture to support your sustainability goals?\nSUS 6: How do your organizational processes support your sustainability goals?"
+        },
+                {
+            "wafr_lens": "Data Analytics Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/dataanalytics",
+            "wafr_pillar": "Operational Excellence",
+            "wafr_pillar_id": 1,
+            "wafr_pillar_prompt": "Please answer the following questions for the Operational Excellence pillar of Well-Architected Framework Review (WAFR) Data Analytics Lens Lens.\nQuestions:\nOPS 1: How do you measure the health of your analytics workload?\nOPS 2: How do you deploy jobs and applications in a controlled and reproducible way?"
+        },
+        {
+            "wafr_lens": "Data Analytics Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/dataanalytics",
+            "wafr_pillar": "Security",
+            "wafr_pillar_id": 2,
+            "wafr_pillar_prompt": "Please answer the following questions for the Security pillar of Well-Architected Framework Review (WAFR) Data Analytics Lens Lens.\nQuestions:\nSEC 1: How do you protect data in your organizations analytics workload?\nSEC 2: How do you manage access to data within your organization's source, analytics, and downstream systems?\nSEC 3: How do you protect the infrastructure of the analytics workload?"
+        },
+        {
+            "wafr_lens": "Data Analytics Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/dataanalytics",
+            "wafr_pillar": "Reliability",
+            "wafr_pillar_id": 3,
+            "wafr_pillar_prompt": "Please answer the following questions for the Reliability pillar of Well-Architected Framework Review (WAFR) Data Analytics Lens Lens.\nQuestions:\nREL 1: How do you design analytics workloads to withstand and mitigate failures?\nREL 2: How do you govern data and metadata changes?"
+        },
+        {
+            "wafr_lens": "Data Analytics Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/dataanalytics",
+            "wafr_pillar": "Performance Efficiency",
+            "wafr_pillar_id": 4,
+            "wafr_pillar_prompt": "Please answer the following questions for the Performance Efficiency pillar of Well-Architected Framework Review (WAFR) Data Analytics Lens Lens.\nQuestions\nPERF 1: How do you select the best-performing options for your analytics workload?\nPERF 2: How do you select the best-performing storage options for your workload?\nPERF 3: How do you select the best-performing file formats and partitioning?"
+        },
+        {
+            "wafr_lens": "Data Analytics Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/dataanalytics",
+            "wafr_pillar": "Cost Optimization",
+            "wafr_pillar_id": 5,
+            "wafr_pillar_prompt": "Please answer the following questions for the Cost Optimization pillar of Well-Architected Framework Review (WAFR) Data Analytics Lens Lens.\nQuestions:\nCOST 1: How do you select the compute and storage solution for your analytics workload?\nCOST 2: How do you measure and attribute the analytics workload financial accountability?\nCOST 3: How do you manage the cost of your workload over time?\nCOST 4: How do you choose the financially-optimal pricing models of the infrastructure?"
+        },
+        {
+            "wafr_lens": "Data Analytics Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/dataanalytics",
+            "wafr_pillar": "Sustainability",
+            "wafr_pillar_id": 6,
+            "wafr_pillar_prompt": "Please answer the following questions for the Sustainability pillar of Well-Architected Framework Review (WAFR) Data Analytics Lens Lens.\nQuestions:\nSUS 1: How does your organization measure and improve its sustainability practices?"
+        },
+        {
+            "wafr_lens": "Financial Services Industry Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/financialservices",
+            "wafr_pillar": "Operational Excellence",
+            "wafr_pillar_id": 1,
+            "wafr_pillar_prompt": "Please answer the following questions for the Operational Excellence pillar of the Well-Architected Framework Review (WAFR).\nQuestions:\nOPS 1: Have you defined risk management roles for the cloud?\nOPS 2: Have you completed an operational risk assessment?\nOPS 3: Have you assessed your specific workload against regulatory needs?\nOPS 4: How do you assess your ability to operate a workload in the cloud?\nOPS 5: How do you understand the health of your workload?\nOPS 6: How do you assess the business impact of a cloud provider service event?\nOPS 7: Have you developed a continuous improvement model?"
+        },
+        {
+            "wafr_lens": "Financial Services Industry Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/financialservices",
+            "wafr_pillar": "Security",
+            "wafr_pillar_id": 2,
+            "wafr_pillar_prompt": "Please answer the following questions for the Security pillar of Well-Architected Framework Review (WAFR) Financial Services Industry Lens Lens.\nQuestions:\nSEC 1: How does your governance enable secure cloud adoption at scale?\nSEC 2: How do you achieve, maintain, and monitor ongoing compliance with regulatory guidelines and mandates?\nSEC 3: How do you monitor the use of elevated credentials, such as administrative accounts, and guard against privilege escalation?\nSEC 4: How do you accommodate separation of duties as part of your identity and access management design?\nSEC 5: How are you monitoring your ongoing cloud environment for potential threats?\nSEC 6: How do you address emerging threats?\nSEC 7: How are you inspecting your financial services infrastructure and network for unauthorized traffic?\nSEC 8: How do you isolate your software development lifecycle (SDLC) environments (like development, test, and production)?\nSEC 9: How are you managing your encryption keys?\nSEC 10: How are you handling data loss prevention in the cloud environment?\nSEC 11: How are you protecting against ransomware?\nSEC 12: How are you meeting your obligations for incident reporting to regulators?"
+        },
+        {
+            "wafr_lens": "Financial Services Industry Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/financialservices",
+            "wafr_pillar": "Reliability",
+            "wafr_pillar_id": 3,
+            "wafr_pillar_prompt": "Please answer the following questions for the Reliability pillar of Well-Architected Framework Review (WAFR) Financial Services Industry Lens Lens.\nQuestions:\nREL 1: Have you planned for events that impact your software development infrastructure and challenge your recovery & resolution plans?\nREL 2: Are you practicing continuous resilience to ensure that your services meet regulatory availability and recovery requirements?\nREL 3: How are your business and regulatory requirements driving the resilience of your workload?\nREL 4: Does the resilience and the architecture of your workload reflect the business requirements and resilience tier?\nREL 5: Is the resilience of the architecture addressing challenges for distributed workloads across AWS and an external entity?\nREL 6: To mitigate operational risks, can your workload owners detect, locate, and recover from gray failures?\nREL 7: How do you monitor your resilience objectives to achieve your strategic objectives and business plan?\nREL 8: How do you monitor your resources to understand your workloads health?\nREL 9: How are you backing up data in the cloud?\nREL 10: How are backups retained?"
+        },
+        {
+            "wafr_lens": "Financial Services Industry Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/financialservices",
+            "wafr_pillar": "Performance Efficiency",
+            "wafr_pillar_id": 4,
+            "wafr_pillar_prompt": "Please answer the following questions for the Performance Efficiency pillar of Well-Architected Framework Review (WAFR) Financial Services Industry Lens Lens.\nQuestions:\nPERF 1: How do you select the best performing architecture?\nPERF 2: How do you select your compute architecture?\nPERF 3: How do you select your storage architecture?\nPERF 4: How do you select your network architecture?\nPERF 5: How do you evaluate compliance with performance requirements?\nPERF 6: How do you make trade-offs in your architecture?"
+                                  
+        },
+        {
+            "wafr_lens": "Financial Services Industry Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/financialservices",
+            "wafr_pillar": "Cost Optimization",
+            "wafr_pillar_id": 5,
+            "wafr_pillar_prompt": "Please answer the following questions for the Cost Optimization pillar of the Well-Architected Framework Review (WAFR) Financial Services Industry Lens Lens.\nQuestions:\nCOST 1: Is your cloud team educated on relevant technical and commercial optimization mechanisms?\nCOST 2: Do you apply the Pareto-principle (80/20 rule) to manage, optimize, and plan your cloud usage and spend?\nCOST 3: Do you use automation to drive scale for Cloud Financial Management practices?\nCOST 4: How do you promote cost-awareness within your organization?\nCOST 5: How do you track anomalies in your ongoing costs for AWS services?\nCOST 6: How do you track your workload usage cycles?\nCOST 7: Are you using all the available AWS credit and investment programs?\nCOST 8: Are you monitoring usage of Savings Plans regularly?\nCOST 9: Are you using the cost advantages of tiered storage?\nCOST 10: Do you use lower cost Regions to run less data-intensive or time-sensitive workloads?\nCOST 11: Do you use cost tradeoffs of various AWS pricing models in your workload design?\nCOST 12: Are you saving costs by adopting a set of modern microservice architectures?\nCOST 13: Do you use cloud services to accommodate consulting or testing of projects?\nCOST 14: How do you measure the cost of licensing third-party applications and software?\nCOST 15: Have you reviewed your ongoing cost structure tradeoffs for your current AWS services lately?\nCOST 16: Are you continuously assessing the ongoing costs and usage of your cloud implementations?\nCOST 17: Are you continually reviewing your workload to provide the most cost-effective resources?\nCOST 18: Do you have specific workload modernization or refactoring goals in your cloud strategy?\nCOST 19: Do you use the cloud to drive innovation & operational excellence of your business model to impact both the top & bottom line?"
+        },
+        {
+            "wafr_lens": "Financial Services Industry Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/financialservices",
+            "wafr_pillar": "Sustainability",
+            "wafr_pillar_id": 6,
+            "wafr_pillar_prompt": "Please answer the following questions for the Sustainability pillar of Well-Architected Framework Review (WAFR) Financial Services Industry Lens Lens.\nQuestions:\nSUS 1: How do you select the most sustainable Regions in your area?\nSUS 2: How do you address data sovereignty regulations for location of sustainable Region?\nSUS 3: How do you select a Region to optimize financial services workloads for sustainability?\nSUS 4: How do you prioritize business critical functions over non-critical functions?\nSUS 5: How do you define, review, and optimize network access patterns for sustainability?\nSUS 6: How do you monitor and minimize resource usage for financial services workloads?\nSUS 7: How do you optimize batch processing components for sustainability?\nSUS 8: How do you optimize your resource usage?\nSUS 9: How do you optimize areas of your code that use the most resources?\nSUS 10: Have you selected the storage class with the lowest carbon footprint?\nSUS 11: Do you store processed data or raw data?\nSUS 12: What is your process for benchmarking instances for existing workloads?\nSUS 13: Can you complete workloads over more time while not violating your maximum SLA?\nSUS 14: Do you have multi-architecture images for grid computing systems?\nSUS 15: What is your testing process for workloads that require floating point precision?\nSUS 16: Do you achieve a judicious use of development resources?\nSUS 17: How do you minimize your test, staging, sandbox instances?\nSUS 18: How do you define the minimum requirement in response time for customers in order to maximize your green SLA?"
+        }
+    ]
+}
+
+
