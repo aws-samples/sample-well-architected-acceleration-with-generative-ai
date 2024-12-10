@@ -227,7 +227,8 @@ On "Create new Well Architected review" page, select the analysis type ("Quick" 
 * **"Deep with Well-Architected Tool"** - robust and deep analysis that also creates workload in the AWS Well Architected tool. Takes longer to complete as it doesn't group questions and responses are generated for every question individually. This takes longer to execute. 
 <br/> 
 ![Create new WAFR analysis page](graphics/createnew.png)<br/> <br/> 
-
+<br/> 
+![Welcome page](graphics/createnew.png)<br/> 
 * Note: "Created by" field is automatically populated with the logged user name. <br/> 
 
 <br/> 
