@@ -223,8 +223,8 @@ On home page, click on the "New WAFR Review" link.
 On "Create new Well Architected review" page, select the analysis type ("Quick" or "Deep with Well-Architected Tool") and provide analysis name, description, Well Architectd lens, etc. in the input form. <br/><br/> You have an option to select one or more Well Architected pillars. <br/><br/>Finally upload the solution architecture / technical design document that needs to be analysed and press the "Create WAFR Analysis" button.<br/> 
 <br/> 
 **Analysis Types**:<br/>
-* "Quick" - quick analysis without the creation of workload in the AWS Well Architected tool. Relatively faster as it groups all questions for an individual pillar into a single prompt; suitable for initial assessment. 
-* "Deep with Well-Architected Tool" - robust and deep analysis that also creates workload in the AWS Well Architected tool. Takes longer to complete as it doesn't group questions and responses are generated for every question individually. This takes longer to execute. 
+* **"Quick"** - quick analysis without the creation of workload in the AWS Well Architected tool. Relatively faster as it groups all questions for an individual pillar into a single prompt; suitable for initial assessment. 
+* **"Deep with Well-Architected Tool"** - robust and deep analysis that also creates workload in the AWS Well Architected tool. Takes longer to complete as it doesn't group questions and responses are generated for every question individually. This takes longer to execute. 
 <br/> 
 ![Create new WAFR analysis page](graphics/createnew.png)<br/> <br/> 
 
