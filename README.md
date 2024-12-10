@@ -228,7 +228,7 @@ On "Create new Well Architected review" page, select the analysis type ("Quick" 
 <br/> 
 ![Create new WAFR analysis page](graphics/createnew.png)<br/> <br/> 
 <br/> 
-![Welcome page](graphics/createnew.png)<br/> 
+![Welcome page](graphics/home.png)<br/> 
 * Note: "Created by" field is automatically populated with the logged user name. <br/> 
 
 <br/> 
