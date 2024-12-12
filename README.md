@@ -30,7 +30,7 @@ This sample aims to accelerate AWS Well-Architected Framework Review (WAFR) velo
 
 ## Technical Architecture
 
-![WAFR Accelerator System Architecture Diagram](sys-arch.png)
+[[/sys-arch.png|WAFR Accelerator System Architecture Diagram]]
 <br/> 
 
 ## Implementation Guide
