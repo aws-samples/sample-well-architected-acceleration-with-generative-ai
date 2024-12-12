@@ -67,17 +67,17 @@ Amazon Bedrock knowledge base is driven by the AWS Well-Architected documents. D
 **AWS Well-Architected Framework pillar documents:** (place them under 'well_architected_docs/wellarchitected' subfolder)
  <br/> 
  
- * Operational Excellence - https://docs.aws.amazon.com/wellarchitected/latest/framework/operational-excellence.html<br/> 
+ * Operational Excellence - https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html<br/> 
  
- * Security - https://docs.aws.amazon.com/wellarchitected/latest/framework/security.html<br/> 
+ * Security - https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html<br/> 
  
- * Reliability - https://docs.aws.amazon.com/wellarchitected/latest/framework/reliability.html<br/> 
+ * Reliability - https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html<br/> 
  
- * Performance efficiency - https://docs.aws.amazon.com/wellarchitected/latest/framework/performance-efficiency.html<br/> 
+ * Performance efficiency - https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html<br/> 
  
- * Cost optimization - https://docs.aws.amazon.com/wellarchitected/latest/framework/cost-optimization.html<br/> 
+ * Cost optimization - https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html<br/> 
  
- * Sustainability - https://docs.aws.amazon.com/wellarchitected/latest/framework/sustainability.html<br/> 
+ * Sustainability - https://docs.aws.amazon.com/wellarchitected/latest/sustainability-pillar/sustainability-pillar.html<br/> 
 
 Repeat the above for:<br/>
  
