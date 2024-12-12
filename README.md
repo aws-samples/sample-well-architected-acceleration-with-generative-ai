@@ -1,8 +1,8 @@
-# Sample AWS Well Architected Review (WAFR) Acceleration with Generative AI (GenAI)
+# Sample AWS Well-Architected Review (WAFR) Acceleration with Generative AI (GenAI)
 
 ## Name
 
-AWS Well Architected Framework Review (WAFR) Acceleration with Generative AI (GenAI)
+AWS Well-Architected Framework Review (WAFR) Acceleration with Generative AI (GenAI)
 <br/> 
 ## Description
 
@@ -30,8 +30,7 @@ This sample aims to accelerate AWS Well-Architected Framework Review (WAFR) velo
 
 ## Technical Architecture
 
-[[sys-arch.png|WAFR Accelerator System Architecture Diagram]]
-<br/> 
+ ![WAFR Accelerator System Architecture Diagram](sys-arch.png)<br/> 
 
 ## Implementation Guide
 
@@ -55,9 +54,9 @@ unzip sample-well-architected-acceleration-with-generative-ai-main.zip
 cd sample-well-architected-acceleration-with-generative-ai-main/
 ```
 
-Amazon Bedrock knowledge base is driven by the AWS Well Architected documents. Download the documents in the PDF format and put them under 'well_architected_docs' folder. These should be populated before the build for them to be ingested during the build. Delete the default README.MD from the 'well_architected_docs' folder. 
+Amazon Bedrock knowledge base is driven by the AWS Well-Architected documents. Download the documents in the PDF format and put them under 'well_architected_docs' folder. These should be populated before the build for them to be ingested during the build. Delete the default README.MD from the 'well_architected_docs' folder. 
  <br/>  <br/> 
- ![Well Architected Document Link](graphics/walink.png)<br/> 
+ ![Well-Architected Document Link](graphics/walink.png)<br/> 
  <br/> 
 
 **AWS Well-Architected Framework Overview:** (place it under 'well_architected_docs/overview' subfolder)
@@ -86,13 +85,12 @@ Repeat the above for:<br/>
 
  **Data Analytics Lens:** https://docs.aws.amazon.com/wellarchitected/latest/analytics-lens/analytics-lens.html. Place it under 'well_architected_docs/dataanalytics' subfolder.  
 
-The 'well_architected_docs' folder would now look like as below:<br/> 
-![Well Architected Docs Bucket](graphics/kbbucket.png)<br/> 
- <br/> 
+The 'well_architected_docs' folder would now look like as below:<br/> <br/> 
+![Well-Architected Docs Bucket](graphics/kbbucket.png)<br/>  
 
-* Note: At present, this sample only supports the above Well Architected lenses.
+* Note: At present, only the above Well-Architected lenses are supported.
 
-* Note: If you missed this step or would like to refresh the documents with further releases of Well Architected Framework then:
+* Note: If you missed this step or would like to refresh the documents with further releases of Well-Architected Framework then:
 	* Upload the files to the knowledge base bucket created by the stack, adhering to the above folder structure. 
 	* On AWS management console, go to Amazon Bedrock -> Knowledge bases -> Click on the knowledge base created by the stack-> Data Source -> Sync. This will re-sync the knowledge base from the S3 bucket. <br/> 
 
@@ -207,45 +205,44 @@ streamlit run WAFR_Accelerator.py
 ``` 
 
 You can now use the Amazon Cloudfront URL from the CDK output to access the sample application in a web browser.
-
 <br/> 
 
 ### Testing the demo application
 
-Open a new web browser window and copy the Amazon Cloudfront URL copied earlier into the address bar. On the login page, enter the user credentials for the previously created user.
+Open a new web browser window and copy the Amazon Cloudfront URL copied earlier into the address bar. On the login page, enter the user credentials for the previously created user.<br/>
 <br/> 
 ![Login page](graphics/loginpage.png)<br/> 
 <br/> 
 On home page, click on the "New WAFR Review" link.
-<br/> 
+<br/> <br/>
 ![Welcome page](graphics/home.png)<br/> 
 <br/> 
-On "Create new Well Architected review" page, select the analysis type ("Quick" or "Deep with Well-Architected Tool") and provide analysis name, description, Well Architectd lens, etc. in the input form. <br/><br/> You have an option to select one or more Well Architected pillars. <br/><br/>Finally upload the solution architecture / technical design document that needs to be analysed and press the "Create WAFR Analysis" button.<br/> 
+On "Create New WAFR Analysis" page, select the analysis type ("Quick" or "Deep with Well-Architected Tool") and provide analysis name, description, Well Architectd lens, etc. in the input form. <br/>
 <br/> 
 **Analysis Types**:<br/>
-* **"Quick"** - quick analysis without the creation of workload in the AWS Well Architected tool. Relatively faster as it groups all questions for an individual pillar into a single prompt; suitable for initial assessment. 
-* **"Deep with Well-Architected Tool"** - robust and deep analysis that also creates workload in the AWS Well Architected tool. Takes longer to complete as it doesn't group questions and responses are generated for every question individually. This takes longer to execute. 
-<br/> 
-![Create new WAFR analysis page](graphics/createnew.png)
-[[graphics/createnew.png|Create new WAFR analysis page]]
-[[/graphics/createnew.png|Create new WAFR analysis page]]
-<br/> <br/> 
-<br/>  
-* Note: "Created by" field is automatically populated with the logged user name. <br/> 
+* **"Quick"** - quick analysis without the creation of workload in the AWS Well-Architected tool. Relatively faster as it groups all questions for an individual pillar into a single prompt; suitable for initial assessment. 
+* **"Deep with Well-Architected Tool"** - robust and deep analysis that also creates workload in the AWS Well-Architected tool. Takes longer to complete as it doesn't group questions and responses are generated for every question individually. This takes longer to execute. 
 
+![Create new WAFR analysis page](graphics/createnew.png)
+
+* Note: "Created by" field is automatically populated with the logged user name.
+  
+You have an option to select one or more Well-Architected pillars. <br/><br/>Finally upload the solution architecture / technical design document that needs to be analysed and press the "Create WAFR Analysis" button.<br/> 
 <br/> 
-Post successful submission, navigate to the "Existing WAFR Reviews" page. The newly submitted analysis would be listed in the table along with any existing reviews. <br/> 
+Post successful submission, navigate to the "Existing WAFR Reviews" page. The newly submitted analysis would be listed in the table along with any existing reviews. <br/> <br/> 
 ![Existing WAFR reviews](graphics/existing.png)<br/> 
-<br/> 
-Once the analysis is marked "Completed", the WAFR analysis for the selected lens would be shown at the bottom part of the page. If there are multiple reviews, then select the relevant analysis from the combo list.  <br/> 
-<br/> 
+
+Once the analysis is marked "Completed", the WAFR analysis for the selected lens would be shown at the bottom part of the page. If there are multiple reviews, then select the relevant analysis from the combo list. 
+<br/>
+
+![Create new WAFR analysis page](graphics/output.png)<br/> 
 
 * Note: Analysis duration varies based on the Analysis Type ("Quick" or "Deep with Well-Architected Tool") and number of WAFR Pillars selected. A 'Quick' analysis type with one WAFR pillar is likely to be much quicker than "Deep with Well-Architected Tool" analysis type with all the six WAFR Pillars selected.<br/> 
-* Note: Only the questions for the selected Well Architected lens and pillars are answered. <br/>
-<br/> 
-![Create new WAFR analysis page](graphics/output.png)<br/> 
-<br/> 
-You could chat with the uploaded document as well as any of the generated content by using the "WAFR Chat" section at the bottom of the "Existing WAFR Reviews" page.
+* Note: Only the questions for the selected Well-Architected lens and pillars are answered. <br/>
+
+To chat with the uploaded document as well as any of the generated content by using the "WAFR Chat" section at the bottom of the "Existing WAFR Reviews" page.
+<br/>
+
 ![WAFR chat](graphics/chat.png)<br/> 
 <br/> 
 
