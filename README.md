@@ -30,7 +30,7 @@ This sample aims to accelerate AWS Well-Architected Framework Review (WAFR) velo
 
 ## Technical Architecture
 
-[[/sys-arch.png|WAFR Accelerator System Architecture Diagram]]
+[[sys-arch.png|WAFR Accelerator System Architecture Diagram]]
 <br/> 
 
 ## Implementation Guide
@@ -226,7 +226,10 @@ On "Create new Well Architected review" page, select the analysis type ("Quick" 
 * **"Quick"** - quick analysis without the creation of workload in the AWS Well Architected tool. Relatively faster as it groups all questions for an individual pillar into a single prompt; suitable for initial assessment. 
 * **"Deep with Well-Architected Tool"** - robust and deep analysis that also creates workload in the AWS Well Architected tool. Takes longer to complete as it doesn't group questions and responses are generated for every question individually. This takes longer to execute. 
 <br/> 
-![Create new WAFR analysis page](graphics/createnew.png)<br/> <br/> 
+![Create new WAFR analysis page](graphics/createnew.png)
+[[graphics/createnew.png|Create new WAFR analysis page]]
+[[/graphics/createnew.png|Create new WAFR analysis page]]
+<br/> <br/> 
 <br/>  
 * Note: "Created by" field is automatically populated with the logged user name. <br/> 
 
