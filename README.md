@@ -47,12 +47,11 @@ If you downloaded the .zip file, you can use the following command:<br/>
 ```
 unzip sample-well-architected-acceleration-with-generative-ai-main.zip
 ```
-
-### Preparing and populating Amazon Bedrock Knowledge Base with AWS Well-Architected Reference Documents
-
 ```
 cd sample-well-architected-acceleration-with-generative-ai-main/
 ```
+
+### Preparing and populating Amazon Bedrock Knowledge Base with AWS Well-Architected Reference Documents
 
 Amazon Bedrock knowledge base is driven by the AWS Well-Architected documents. Download the documents in the PDF format and put them under 'well_architected_docs' folder. These should be populated before the build for them to be ingested during the build. Delete the default README.MD from the 'well_architected_docs' folder. 
  <br/>  <br/> 
