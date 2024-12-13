@@ -9,7 +9,7 @@ if 'authenticated' not in st.session_state or not st.session_state['authenticate
 def architecture():
     st.title("Architecture")
 
-    st.header("AWS Well Architected Acceleration with Generative AI Architecture")
+    st.header("AWS Well-Architected Acceleration with Generative AI Architecture")
     st.image("sys-arch.png", use_container_width=True)
 
     st.header("Components")
