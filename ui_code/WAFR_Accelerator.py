@@ -7,7 +7,7 @@ if 'authenticated' not in st.session_state or not st.session_state['authenticate
 
 # Main content for the home page
 st.write("""
-### What is AWS Well Architected Acceleration with Generative AI sample?
+### What is AWS Well-Architected Acceleration with Generative AI sample?
 
 **WAFR Accelerator** is a comprehensive sample designed to facilitate and expedite the AWS Well-Architected Framework Review process. The AWS Well-Architected Framework helps cloud architects build secure, high-performing, resilient, and efficient infrastructure for their applications. 
 
