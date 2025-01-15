@@ -39,6 +39,14 @@ This sample aims to accelerate AWS Well-Architected Framework Review (WAFR) velo
 	* Titan Embeddings G1 - Text
 	* Claude 3-5 Sonnet
 
+### Cloning Repository
+
+Clone the repository to your local directory. You can use the following command:<br/> 
+```
+git clone https://github.com/aws-samples/sample-well-architected-acceleration-with-generative-ai.git
+```
+Alternatively, you can download the code as a zip file.
+
 ### Code Download
 
 Download the compressed source code. You can do this by selecting the ‘Code’ drop down menu on top right side.<br/> 
