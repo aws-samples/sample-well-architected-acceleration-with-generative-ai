@@ -69,28 +69,28 @@ Amazon Bedrock knowledge base is driven by the AWS Well-Architected documents. D
 **AWS Well-Architected Framework Overview:** (place it under 'well_architected_docs/overview' subfolder)
  <br/> 
 
- * Overview - https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html
+ * [Overview](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
 
 **AWS Well-Architected Framework pillar documents:** (place them under 'well_architected_docs/wellarchitected' subfolder)
  <br/> 
  
- * Operational Excellence - https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html<br/> 
+ * [Operational Excellence](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html)
  
- * Security - https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html<br/> 
+ * [Security](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html)
  
- * Reliability - https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html<br/> 
+ * [Reliability](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html)
  
- * Performance efficiency - https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html<br/> 
+ * [Performance efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html)
  
- * Cost optimization - https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html<br/> 
+ * [Cost optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html)
  
- * Sustainability - https://docs.aws.amazon.com/wellarchitected/latest/sustainability-pillar/sustainability-pillar.html<br/> 
+ * [Sustainability](https://docs.aws.amazon.com/wellarchitected/latest/sustainability-pillar/sustainability-pillar.html)
 
 Repeat the above for:<br/>
  
- **Financial Services Industry Lens:** https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/financial-services-industry-lens.html. Place it under 'well_architected_docs/financialservices' subfolder. 
+ **[Financial Services Industry Lens:](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/financial-services-industry-lens.html)** Place it under 'well_architected_docs/financialservices' subfolder. 
 
- **Data Analytics Lens:** https://docs.aws.amazon.com/wellarchitected/latest/analytics-lens/analytics-lens.html. Place it under 'well_architected_docs/dataanalytics' subfolder.  
+ **[Data Analytics Lens:](https://docs.aws.amazon.com/wellarchitected/latest/analytics-lens/analytics-lens.html)**  Place it under 'well_architected_docs/dataanalytics' subfolder.  
 
 The 'well_architected_docs' folder would now look like as below:<br/> <br/> 
 ![Well-Architected Docs Bucket](graphics/kbbucket.png)<br/>  
@@ -128,8 +128,8 @@ Once the virtualenv is activated, you can install the required dependencies.
 pip3 install -r requirements.txt
 ```    
 
-Open "wafr_genai_accelerator/wafr_genai_accelerator_stack.py" file using a file editor such as nano and update the Cloundfront managed prefix list for your deployment region. As a default, it uses 'us-west-2' managed prefix list.
-https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/LocationsOfEdgeServers.html
+Open "wafr_genai_accelerator/wafr_genai_accelerator_stack.py" file using a file editor such as nano and update the Cloundfront [managed prefix list](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/LocationsOfEdgeServers.html) for your deployment region. As a default, it uses 'us-west-2' managed prefix list.
+
 
 ```
 alb_security_group.add_ingress_rule(
@@ -172,7 +172,7 @@ You will need to enter 'y' to confirm the deployment. The deployment can take ar
 
 ### Demo configurations
 
-On the cdk build completion, you would see three ouputs:<br/>
+On the cdk build completion, you would see three outputs:<br/>
 	a) Amazon Cognito user pool name <br/> 
 	b) Front end UI EC2 instance id <br/> 
     c) Amazon Cloudfront URL for the web application 
@@ -180,7 +180,7 @@ On the cdk build completion, you would see three ouputs:<br/>
 
 ##### Add a user to Amazon Cognito user pool
 
-Firstly, add a user in the Amazon Cognito pool indicated in the output. You would use this user credentials for application login later on. 
+Firstly, [add a user to the Amazon Cognito pool](https://docs.aws.amazon.com/cognito/latest/developerguide/how-to-create-user-accounts.html#creating-a-new-user-using-the-console) indicated in the output. You would use this user credentials for application login later on. 
 
 ##### EC2 sanity check
 
