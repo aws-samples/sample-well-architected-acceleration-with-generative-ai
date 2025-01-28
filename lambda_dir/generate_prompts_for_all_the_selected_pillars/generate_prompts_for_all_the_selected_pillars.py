@@ -296,7 +296,7 @@ def get_lens_filter(kb_bucket, wafr_lens):
         lens= "wellarchitected"
 
     lens_filter= {
-        "andAll": [
+        "orAll": [
             {
                 "startsWith": {
                     "key": "x-amz-bedrock-kb-source-uri",
@@ -314,11 +314,11 @@ def get_lens_filter(kb_bucket, wafr_lens):
     logger.info(f"get_lens_filter: {lens_filter}")
     return lens_filter
 
-def bedrock_prompt(wafr_lens, pillar, questions, pillar_specfic_wafr_answer_choices, pillar_specfic_prompt_question, kb_id, bedrock_agent_client, document_content=None, wafr_reference_bucket = None):    
+def bedrock_prompt(wafr_lens, pillar, pillar_specfic_question_id, pillar_specfic_wafr_answer_choices, pillar_specfic_prompt_question, kb_id, bedrock_agent_client, document_content=None, wafr_reference_bucket = None):    
     
     lens_filter = get_lens_filter(wafr_reference_bucket, wafr_lens)
     
-    response = retrieve(questions, kb_id, bedrock_agent_client, lens_filter)
+    response = retrieve(pillar_specfic_prompt_question, kb_id, bedrock_agent_client, lens_filter, pillar, wafr_lens)
     
     retrievalResults = response['retrievalResults']
     contexts = get_contexts(retrievalResults)
@@ -416,13 +416,17 @@ def bedrock_prompt(wafr_lens, pillar, questions, pillar_specfic_wafr_answer_choi
     })
     return body
     
-def retrieve(questions, kbId, bedrock_agent_client, lens_filter):
-    kb_prompt = f"""For each question provide:
+def retrieve(question, kbId, bedrock_agent_client, lens_filter, pillar, wafr_lens):
+    
+    kb_prompt = f"""For the given question from the {pillar} pillar of {wafr_lens}, provide:
     - Recommendations
     - Best practices
     - Examples
     - Risks
-    {questions}"""
+    Question: {question}"""
+    
+    logger.debug (f"question: {question}")
+    logger.debug (f"kb_prompt: {kb_prompt}")
     
     return bedrock_agent_client.retrieve(
         retrievalQuery= {

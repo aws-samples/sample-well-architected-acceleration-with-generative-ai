@@ -443,7 +443,7 @@ def get_lens_filter(kb_bucket, wafr_lens):
         lens= "wellarchitected"
 
     lens_filter= {
-        "andAll": [
+        "orAll": [
             {
                 "startsWith": {
                     "key": "x-amz-bedrock-kb-source-uri",
