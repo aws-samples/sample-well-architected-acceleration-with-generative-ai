@@ -36,7 +36,7 @@ This sample aims to accelerate AWS Well-Architected Framework Review (WAFR) velo
 
 ### Pre-requisites
 * Ensure you have access to the following models in Amazon Bedrock:
-	* Titan Embeddings G1 - Text
+	* Titan Text Embeddings V2
 	* Claude 3-5 Sonnet
 
 ### Cloning Repository
