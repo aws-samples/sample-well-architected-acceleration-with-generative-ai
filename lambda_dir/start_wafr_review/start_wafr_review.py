@@ -434,34 +434,49 @@ def invoke_bedrock(streaming, claude_prompt_body, pillar_review_output_filename,
     raise Exception (f"Maximum retries ({max_retries}) exceeded. Unable to invoke the model.")
 
 def get_lens_filter(kb_bucket, wafr_lens):
-    
-    if(wafr_lens.startswith("Financial Services Industry Lens")):
-        lens= "financialservices"
-    elif(wafr_lens.startswith("Data Analytics Lens")):
-        lens= "dataanalytics"
-    else: # "AWS Well-Architected Framework"
-        lens= "wellarchitected"
 
-    lens_filter= {
-        "orAll": [
-            {
-                "startsWith": {
-                    "key": "x-amz-bedrock-kb-source-uri",
-                    "value": f"s3://{kb_bucket}/{lens}"
-                }
-            },
-            {
-                "startsWith": {
-                    "key": "x-amz-bedrock-kb-source-uri",
-                    "value": f"s3://{kb_bucket}/overview"
-                }
-            }
-        ]
+    # Map lens prefixes to their corresponding lens names - allows for additional of lenses
+    lens_mapping = {
+        "Financial Services Industry Lens": "financialservices",
+        "Data Analytics Lens": "dataanalytics"
     }
+    
+    # Get lens name or default to "wellarchitected"
+    lens = next(
+        (value for prefix, value in lens_mapping.items() 
+         if wafr_lens.startswith(prefix)), 
+        "wellarchitected"
+    )
+    
+    # If wellarchitected lens then also use the overview documentation
+    if lens == "wellarchitected":
+        lens_filter = {
+            "orAll": [
+                {
+                    "startsWith": {
+                        "key": "x-amz-bedrock-kb-source-uri",
+                        "value": f"s3://{kb_bucket}/{lens}"
+                    }
+                },
+                {
+                    "startsWith": {
+                        "key": "x-amz-bedrock-kb-source-uri",
+                        "value": f"s3://{kb_bucket}/overview"
+                    }
+                }
+            ]
+        }
+    else: # Just use the lens documentation 
+        lens_filter = {
+            "startsWith": {
+                "key": "x-amz-bedrock-kb-source-uri",
+                "value": f"s3://{kb_bucket}/{lens}/"
+            }
+        }    
+        
     logger.info(f"get_lens_filter: {json.dumps(lens_filter)}")
     return lens_filter
     
-
 def bedrock_prompt(wafr_lens, pillar, questions, kb_id, document_content=None, wafr_reference_bucket = None):    
     
     lens_filter = get_lens_filter(wafr_reference_bucket, wafr_lens)
