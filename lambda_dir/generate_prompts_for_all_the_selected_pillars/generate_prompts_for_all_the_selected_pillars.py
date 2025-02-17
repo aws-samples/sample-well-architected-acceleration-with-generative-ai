@@ -355,11 +355,15 @@ def bedrock_prompt(wafr_lens, pillar, pillar_specfic_question_id, pillar_specfic
     2) You are also provided with a Knowledge Base which has more information about the specific pillar from the Well-Architected Framework. The relevant parts from the Knowledge Base will be provided under the "kb" section. 
     3) For each question, start your response with the 'Assessment' section, in which you will give a short summary (three to four lines) of your answer.
     4) For each question:
-            a) Provide which Best Practices from the specified pillar have been followed, including the best practice IDs and titles from the respective pillar guidance. List them under the 'Best Practices Followed' section. Example: REL01-BP03 Accommodate fixed service quotas and constraints through architecture.
-            b) Provide your recommendations on how the solution architecture should be updated to address the question's ask. If you have a relevant example, mention it clearly like so: "Example: ". List all of this under the 'Recommendations/Examples' section.
+        a) Provide which Best Practices from the specified pillar have been followed, including the best practice IDs and titles from the respective pillar guidance. List them under the 'Best Practices Followed' section. 
+            Example: REL01-BP03: Accommodate fixed service quotas and constraints through architecture 
+            Example: BP 15.5: Optimize your data modeling and data storage for efficient data retrieval
+        b) Provide your recommendations on how the solution architecture should be updated to address the question's ask. If you have a relevant example, mention it clearly like so: "Example: ". List all of this under the 'Recommendations/Examples' section.
     5) For each question, if the required information is missing or is inadequate to answer the question, then first state that the document doesn't provide any or enough information. Then, list the recommendations relevant to the question to address the gap in the solution architecture document under the 'Recommendations' section. In this case, the 'Best practices followed' section will simply state "Not enough information".
     6) First list the question within <question> and </question> tags in the respons. 
     7) Add citations for the best practices and recommendations by including the best practice ID and heading from the specified lens ("<current_lens>") and specified pillar ("<current_pillar>") under the <kb> section, strictly within <citations> and </citations> tags. And every citation within it should be separated by ',' and start on a new line. If there are no citations then return 'N/A' within <citations> and </citations>. 
+        Example: REL01-BP03: Accommodate fixed service quotas and constraints through architecture 
+        Example: BP 15.5: Optimize your data modeling and data storage for efficient data retrieval
     8) Do not make any assumptions or make up information. Your responses should only be based on the actual solution document provided in the "uploaded_document" section.
     9) Based on the assessment, select the most appropriate choices applicable from the choices provided within the <pillar_choices> section. Do not make up ids and use only the ids specified in the provided choices.
     10) Return the entire response strictly in well-formed XML format. There should not be any text outside the XML response. Use the following XML structure, and ensure that the XML tags are in the same order:
