@@ -77,7 +77,7 @@ class WafrGenaiAcceleratorStack(Stack):
         
         #Creates Bedrock KB using the generative_ai_cdk_constructs. More info: https://github.com/awslabs/generative-ai-cdk-constructs
         kb = bedrock.KnowledgeBase(self, 'WAFR-KnowledgeBase', 
-                    embeddings_model= bedrock.BedrockFoundationModel.TITAN_EMBED_TEXT_V1,
+                    embeddings_model= bedrock.BedrockFoundationModel.TITAN_EMBED_TEXT_V2_1024, 
                     instruction=  'Use this knowledge base to answer questions about AWS Well Architected Framework Review (WAFR).',
                     description= 'This knowledge base contains AWS Well Architected Framework Review (WAFR) reference documents'
                 )
@@ -839,7 +839,8 @@ class WafrGenaiAcceleratorStack(Stack):
                                 "wellarchitected:ListAnswers",
                                 "wellarchitected:ListLensReviewImprovements",
                                 "wellarchitected:ListWorkloads",
-                                "wellarchitected:GetLensReview"
+                                "wellarchitected:GetLensReview",
+                                "wellarchitected:CreateMilestone"
                             ],
                             resources=["*"]  
                         )
