@@ -42,10 +42,34 @@ from cdklabs.generative_ai_cdk_constructs import (
 import json
 import datetime
 
+from .tag_validator import TagValidator
+
 class WafrGenaiAcceleratorStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, tags: dict = None, **kwargs) -> None:
+        """
+        Initialize the WAFR GenAI Accelerator Stack.
+        
+        Args:
+            scope: The scope in which to define this construct
+            construct_id: The scoped construct ID
+            tags: Dictionary of tags to apply to all resources in the stack
+            **kwargs: Additional keyword arguments
+            
+        Raises:
+            ValueError: If provided tags are invalid
+        """
+        # Initialize tags with empty dict if None
+        tags = tags or {}
+        
+        # Validate and standardize tags
+        validated_tags = TagValidator.validate_tags(tags)
+        
         super().__init__(scope, construct_id, description="AWS Well-Architected Framework Review (WAFR) Acceleration with Generative AI (GenAI) sample. (uksb-ig1li00ta6)", **kwargs)
+        
+        # Apply validated tags to all resources in the stack
+        for key, value in validated_tags.items():
+            Tags.of(self).add(key, value)
         
         entryTimestampRaw = datetime.datetime.now()
         entryTimestamp = entryTimestampRaw.strftime("%Y%m%d%H%M")
@@ -393,10 +417,12 @@ class WafrGenaiAcceleratorStack(Stack):
                     volume=ec2.BlockDeviceVolume.ebs(
                         volume_size=8,  # Size in GB
                         encrypted=True,
-                        delete_on_termination=True  # Optional: delete the volume when the instance is terminated
+                        delete_on_termination=True,  # Optional: delete the volume when the instance is terminated
                     )
                 )
-            ]
+            ],
+            # This will propagate instance tags to volumes
+            propagate_tags_to_volume_on_creation=True
         )
 
         EC2_INSTANCE_ID = ec2_create.instance_id
