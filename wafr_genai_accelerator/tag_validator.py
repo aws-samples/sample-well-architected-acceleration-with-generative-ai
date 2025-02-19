@@ -3,7 +3,7 @@ from typing import Dict
 class TagValidator:
     """Validator for AWS resource tags."""
     
-    MAX_TAG_LENGTH = 256
+    MAX_TAG_LENGTH = 128
     MAX_VALUE_LENGTH = 256
     
     @classmethod
@@ -20,8 +20,11 @@ class TagValidator:
         Raises:
             ValueError: If tags are invalid
         """
-
+        if len(tags) > 50:
+            raise ValueError("AWS resources can have a maximum of 50 tags")
+                
         validated_tags = {}
+           
         for key, value in tags.items():
             # Validate key length
             if len(key) > cls.MAX_TAG_LENGTH:
@@ -30,10 +33,6 @@ class TagValidator:
             # Validate value length
             if len(value) > cls.MAX_VALUE_LENGTH:
                 raise ValueError(f"Value for tag '{key}' exceeds maximum length of {cls.MAX_VALUE_LENGTH}")
-            
-            # Validate value is not empty
-            if not value:
-                raise ValueError(f"Value for tag '{key}' cannot be empty")
             
             validated_tags[key] = value
             
