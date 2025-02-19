@@ -187,7 +187,7 @@ if st.session_state.success_message:
 with st.expander("Workload Analysis", expanded=True):
     st.subheader("Workload Analysis")
     analysis_review_type = st.selectbox("Analysis Type", ["Quick", "Deep with Well-Architected Tool"], index=["Quick",  "Deep with Well-Architected Tool"].index(st.session_state.form_data['analysis_review_type']))
-    analysis_name = st.text_input("Workload Name", value=st.session_state.form_data['analysis_name'])
+    analysis_name = st.text_input("Workload Name", value=st.session_state.form_data['analysis_name'], max_chars=100)
     workload_desc = st.text_area("Workload Description", value=st.session_state.form_data['workload_desc'], height=100, max_chars=250)
     if workload_desc:
         char_count = len(workload_desc)
