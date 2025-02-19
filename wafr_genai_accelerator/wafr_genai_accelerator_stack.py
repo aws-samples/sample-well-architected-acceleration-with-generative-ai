@@ -59,21 +59,21 @@ class WafrGenaiAcceleratorStack(Stack):
         Raises:
             ValueError: If provided tags are invalid
         """
-        # Initialize tags with empty dict if None
-        tags = tags or {}
-        
-        # Validate and standardize tags
-        validated_tags = TagValidator.validate_tags(tags)
-        
-        super().__init__(scope, construct_id, description="AWS Well-Architected Framework Review (WAFR) Acceleration with Generative AI (GenAI) sample. (uksb-ig1li00ta6)", **kwargs)
-        
-        # Apply validated tags to all resources in the stack
-        for key, value in validated_tags.items():
-            Tags.of(self).add(key, value)
+        super().__init__(scope, construct_id, description="AWS Well-Architected Framework Review (WAFR) Acceleration with Generative AI (GenAI) sample. (uksb-ig1li00ta6)", **kwargs)        
         
         entryTimestampRaw = datetime.datetime.now()
         entryTimestamp = entryTimestampRaw.strftime("%Y%m%d%H%M")
         entryTimestampLabel = entryTimestampRaw.strftime("%Y-%m-%d-%H-%M")
+
+        # Initialize tags with empty dict if None
+        tags = tags or {}
+        
+        # Validate and standardize tags
+        validated_tags = TagValidator.validate_tags(tags)        
+        
+        # Apply validated tags to all resources in the stack
+        for key, value in validated_tags.items():
+            Tags.of(self).add(key, value)        
         
         #Creates Bedrock KB using the generative_ai_cdk_constructs. More info: https://github.com/awslabs/generative-ai-cdk-constructs
         kb = bedrock.KnowledgeBase(self, 'WAFR-KnowledgeBase', 
