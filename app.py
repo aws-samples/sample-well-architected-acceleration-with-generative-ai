@@ -6,7 +6,17 @@ from wafr_genai_accelerator.wafr_genai_accelerator_stack import WafrGenaiAcceler
 
 app = cdk.App()
 
-WafrGenaiAcceleratorStack(app, "WellArchitectedReviewUsingGenAIStack", tags={},
+# Define tags as a dictionary
+# Tags will be applied to all resources in the stack
+# tags = {
+#     "Environment": "Production",
+#     "Project": "WellArchitectedReview",
+#     "Owner": "TeamName",
+#     "CostCenter": "12345"
+# }
+tags = {}
+
+WafrGenaiAcceleratorStack(app, "WellArchitectedReviewUsingGenAIStack", tags=tags,
     # If you don't specify 'env', this stack will be environment-agnostic.
     # Account/Region-dependent features and context lookups will not work,
     # but a single synthesized template can be deployed anywhere.
