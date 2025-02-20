@@ -42,8 +42,6 @@ from cdklabs.generative_ai_cdk_constructs import (
 import json
 import datetime
 
-from .tag_validator import TagValidator
-
 class WafrGenaiAcceleratorStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, tags: dict = None, **kwargs) -> None:
@@ -63,17 +61,7 @@ class WafrGenaiAcceleratorStack(Stack):
         
         entryTimestampRaw = datetime.datetime.now()
         entryTimestamp = entryTimestampRaw.strftime("%Y%m%d%H%M")
-        entryTimestampLabel = entryTimestampRaw.strftime("%Y-%m-%d-%H-%M")
-
-        # Initialize tags with empty dict if None
-        tags = tags or {}
-        
-        # Validate and standardize tags
-        validated_tags = TagValidator.validate_tags(tags)        
-        
-        # Apply validated tags to all resources in the stack
-        for key, value in validated_tags.items():
-            Tags.of(self).add(key, value)        
+        entryTimestampLabel = entryTimestampRaw.strftime("%Y-%m-%d-%H-%M")      
         
         #Creates Bedrock KB using the generative_ai_cdk_constructs. More info: https://github.com/awslabs/generative-ai-cdk-constructs
         kb = bedrock.KnowledgeBase(self, 'WAFR-KnowledgeBase', 
