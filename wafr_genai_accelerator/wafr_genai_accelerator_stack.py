@@ -44,12 +44,24 @@ import datetime
 
 class WafrGenaiAcceleratorStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
-        super().__init__(scope, construct_id, description="AWS Well-Architected Framework Review (WAFR) Acceleration with Generative AI (GenAI) sample. (uksb-ig1li00ta6)", **kwargs)
+    def __init__(self, scope: Construct, construct_id: str, tags: dict = None, **kwargs) -> None:
+        """
+        Initialize the WAFR GenAI Accelerator Stack.
+        
+        Args:
+            scope: The scope in which to define this construct
+            construct_id: The scoped construct ID
+            tags: Dictionary of tags to apply to all resources in the stack
+            **kwargs: Additional keyword arguments
+            
+        Raises:
+            ValueError: If provided tags are invalid
+        """
+        super().__init__(scope, construct_id, description="AWS Well-Architected Framework Review (WAFR) Acceleration with Generative AI (GenAI) sample. (uksb-ig1li00ta6)", **kwargs)        
         
         entryTimestampRaw = datetime.datetime.now()
         entryTimestamp = entryTimestampRaw.strftime("%Y%m%d%H%M")
-        entryTimestampLabel = entryTimestampRaw.strftime("%Y-%m-%d-%H-%M")
+        entryTimestampLabel = entryTimestampRaw.strftime("%Y-%m-%d-%H-%M")      
         
         #Creates Bedrock KB using the generative_ai_cdk_constructs. More info: https://github.com/awslabs/generative-ai-cdk-constructs
         kb = bedrock.KnowledgeBase(self, 'WAFR-KnowledgeBase', 
@@ -393,10 +405,12 @@ class WafrGenaiAcceleratorStack(Stack):
                     volume=ec2.BlockDeviceVolume.ebs(
                         volume_size=8,  # Size in GB
                         encrypted=True,
-                        delete_on_termination=True  # Optional: delete the volume when the instance is terminated
+                        delete_on_termination=True,  # Optional: delete the volume when the instance is terminated
                     )
                 )
-            ]
+            ],
+            # This will propagate instance tags to volumes
+            propagate_tags_to_volume_on_creation=True
         )
 
         EC2_INSTANCE_ID = ec2_create.instance_id
