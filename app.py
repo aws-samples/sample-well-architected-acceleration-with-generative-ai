@@ -14,7 +14,9 @@ app = cdk.App()
 #     "Owner": "TeamName",
 #     "CostCenter": "12345"
 # }
-tags = {}
+tags = {
+    "Project": "WellArchitectedReview"
+}
 
 WafrGenaiAcceleratorStack(app, "WellArchitectedReviewUsingGenAIStack", tags=tags,
     # If you don't specify 'env', this stack will be environment-agnostic.
