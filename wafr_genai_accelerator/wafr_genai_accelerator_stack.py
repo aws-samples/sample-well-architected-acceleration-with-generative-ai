@@ -62,6 +62,13 @@ class WafrGenaiAcceleratorStack(Stack):
         entryTimestampRaw = datetime.datetime.now()
         entryTimestamp = entryTimestampRaw.strftime("%Y%m%d%H%M")
         entryTimestampLabel = entryTimestampRaw.strftime("%Y-%m-%d-%H-%M")      
+
+        # Initialize tags with empty dict if None
+        tags = tags or {}
+        
+        # Apply validated tags to all resources in the stack
+        for key, value in tags.items():
+            Tags.of(self).add(key, value)
         
         #Creates Bedrock KB using the generative_ai_cdk_constructs. More info: https://github.com/awslabs/generative-ai-cdk-constructs
         kb = bedrock.KnowledgeBase(self, 'WAFR-KnowledgeBase', 
