@@ -1,0 +1,1 @@
+streamlit run WAFR_Accelerator.py

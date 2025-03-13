@@ -13,5 +13,6 @@ node_modules
 package.json
 package-lock.json
 *.pdf
+.venv/
 
 
