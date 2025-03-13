@@ -66,7 +66,7 @@ class WafrGenaiAcceleratorStack(Stack):
         # Initialize tags with empty dict if None
         tags = tags or {}
         
-        # Apply validated tags to all resources in the stack
+        # Apply tags to all resources in the stack
         for key, value in tags.items():
             Tags.of(self).add(key, value)
         
