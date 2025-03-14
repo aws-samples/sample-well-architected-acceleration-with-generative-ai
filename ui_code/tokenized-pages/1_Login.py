@@ -89,10 +89,10 @@ if st.session_state['authenticated']:
     col1, col2, col3, = st.columns(3)
     
     with col1:
-        if st.button('  New WAFR Run    '):
+        if st.button('  New WAFR Review    '):
             st.switch_page("pages/1_New_WAFR_Review.py")
     with col2:
-        if st.button('  WAFR Runs    '):
+        if st.button('  Existing WAFR Reviews    '):
             st.switch_page("pages/2_Existing_WAFR_Reviews.py")
     with col3:
         if st.button('  System Architecture    '):
