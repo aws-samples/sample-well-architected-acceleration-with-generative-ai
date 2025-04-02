@@ -15,7 +15,7 @@ app = cdk.App()
 #     "CostCenter": "12345"
 # }
 tags = {
-    "Project": "WellArchitectedReview"
+    "Project": "WAFR Accelerator"
 }
 
 WafrGenaiAcceleratorStack(app, "WellArchitectedReviewUsingGenAIStack", tags=tags,
