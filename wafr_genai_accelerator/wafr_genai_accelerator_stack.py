@@ -25,7 +25,8 @@ from aws_cdk import (
     aws_stepfunctions as sfn,
     aws_stepfunctions_tasks as tasks,
     aws_lambda_event_sources as lambda_events,
-    aws_logs
+    aws_logs,
+    aws_bedrock as bedrockcdk
 )
 import aws_cdk.aws_elasticloadbalancingv2_targets as elasticloadbalancingv2_targets
 
@@ -44,7 +45,7 @@ import datetime
 
 class WafrGenaiAcceleratorStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, tags: dict = None, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, tags: dict = None, optional_features: dict = None, **kwargs) -> None:
         """
         Initialize the WAFR GenAI Accelerator Stack.
         
@@ -61,12 +62,12 @@ class WafrGenaiAcceleratorStack(Stack):
         
         entryTimestampRaw = datetime.datetime.now()
         entryTimestamp = entryTimestampRaw.strftime("%Y%m%d%H%M")
-        entryTimestampLabel = entryTimestampRaw.strftime("%Y-%m-%d-%H-%M")      
-
+        entryTimestampLabel = entryTimestampRaw.strftime("%Y-%m-%d-%H-%M") 
+        
         # Initialize tags with empty dict if None
         tags = tags or {}
-        
-        # Apply tags to all resources in the stack
+
+        # Apply validated tags to all resources in the stack
         for key, value in tags.items():
             Tags.of(self).add(key, value)
         
@@ -78,6 +79,77 @@ class WafrGenaiAcceleratorStack(Stack):
                 )
         
         KB_ID = kb.knowledge_base_id
+
+        # Flags for optional features
+        optional_features = optional_features or {}
+        GUARDRAIL_ID = None
+        # Only create Guardrails if user has selected it 
+        if(optional_features.get("guardrails", "False") == "True"):
+            # Create Bedrock Guardrail - default list, extend as needed
+            bedrock_guardrail = bedrockcdk.CfnGuardrail(self, "WAFRGuardrail",
+                blocked_input_messaging="Your input has been blocked by your enterprise guardrails.",
+                blocked_outputs_messaging="The model response has been blocked by your enterprise guardrails.",
+                name="wafr-guardrail",
+                description="Guardrail for WAFR Accelerator",
+                content_policy_config=bedrockcdk.CfnGuardrail.ContentPolicyConfigProperty(
+                    filters_config=[
+                        bedrockcdk.CfnGuardrail.ContentFilterConfigProperty(
+                            input_strength="HIGH",
+                            output_strength="HIGH",
+                            type="HATE"
+                        ),
+                        bedrockcdk.CfnGuardrail.ContentFilterConfigProperty(
+                            input_strength="HIGH",
+                            output_strength="HIGH",
+                            type="INSULTS"
+                        ),
+                        bedrockcdk.CfnGuardrail.ContentFilterConfigProperty(
+                            input_strength="HIGH",
+                            output_strength="HIGH",
+                            type="SEXUAL"
+                        ),
+                        bedrockcdk.CfnGuardrail.ContentFilterConfigProperty(
+                            input_strength="HIGH",
+                            output_strength="HIGH",
+                            type="VIOLENCE"
+                        )
+                    ]
+                ),
+                topic_policy_config=bedrockcdk.CfnGuardrail.TopicPolicyConfigProperty(
+                    topics_config=[
+                        bedrockcdk.CfnGuardrail.TopicConfigProperty(
+                            definition="Any form of investment advice, stock tips, or financial recommendations",
+                            name="Investment advice",
+                            type="DENY"
+                        ),
+                        bedrockcdk.CfnGuardrail.TopicConfigProperty(
+                            definition="Discussion about conflicts, wars, military operations, or related topics",
+                            name="Conflicts and war",
+                            type="DENY"
+                        ),
+                        bedrockcdk.CfnGuardrail.TopicConfigProperty(
+                            definition="Political discussions, political opinions, or partisan topics",
+                            name="Politics",
+                            type="DENY"
+                        ),
+                        bedrockcdk.CfnGuardrail.TopicConfigProperty(
+                            definition="Any form of legal advice or recommendations",
+                            name="Legal",
+                            type="DENY"
+                        )
+                    ]
+                ),
+                contextual_grounding_policy_config=bedrockcdk.CfnGuardrail.ContextualGroundingPolicyConfigProperty(
+                    filters_config=[
+                        bedrockcdk.CfnGuardrail.ContextualGroundingFilterConfigProperty(
+                            threshold=0.9,
+                            type="GROUNDING"
+                        )
+                    ]
+                )
+            )
+
+            GUARDRAIL_ID = bedrock_guardrail.attr_guardrail_id
 
         # Create a bucket for server access logs
         accessLogsBucket = s3.Bucket(self, 'wafr-accelerator-access-logs',
@@ -274,7 +346,6 @@ class WafrGenaiAcceleratorStack(Stack):
             allow_all_outbound=True
         )
                      
-    
         # Create IAM role for EC2 instance
         ec2Role = iam.Role(self, "StreamlitAppRole-" + entryTimestamp,
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
@@ -336,7 +407,16 @@ class WafrGenaiAcceleratorStack(Stack):
                             ],
                             effect=iam.Effect.ALLOW
                         ),
-                        
+                        *([iam.PolicyStatement(
+                            actions=[
+                                "bedrock:ApplyGuardrail"
+                            ],
+                            resources=[
+                                f"arn:aws:bedrock:{self.region}:{self.account}:guardrail/{GUARDRAIL_ID}"
+                            ],
+                            effect=iam.Effect.ALLOW
+                        )] if GUARDRAIL_ID else []),
+                        #if (optional_features.get("Guardrails", "False") == "True") else [],
                         iam.PolicyStatement(
                             actions=[
                                 "sqs:SendMessage",
@@ -374,21 +454,145 @@ class WafrGenaiAcceleratorStack(Stack):
                             resources=["*"]  
                         ),
                         iam.PolicyStatement(
-                        actions=[
-                            "wellarchitected:CreateWorkload",
-                            "wellarchitected:UpdateWorkload",
-                            "wellarchitected:UpdateAnswer",
-                            "wellarchitected:GetAnswer",
-                            "wellarchitected:ListAnswers",
-                            "wellarchitected:ListLensReviewImprovements",
-                            "wellarchitected:ListWorkloads"
-                        ],
-                        resources=["*"]  
+                            actions=[
+                                "wellarchitected:CreateWorkload",
+                                "wellarchitected:UpdateWorkload",
+                                "wellarchitected:UpdateAnswer",
+                                "wellarchitected:GetAnswer",
+                                "wellarchitected:ListAnswers",
+                                "wellarchitected:ListLensReviewImprovements",
+                                "wellarchitected:ListWorkloads"
+                            ],
+                            resources=["*"]  
                         )
                     ]
                 )
             }
         )
+
+        # # Create IAM role for EC2 instance
+        # ec2Role = iam.Role(self, "StreamlitAppRole-" + entryTimestamp,
+        #     assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
+        #     managed_policies=[
+        #         iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore")
+        #     ],
+        #     inline_policies={
+        #         "ec2RolePolicies": iam.PolicyDocument(
+        #             statements=[
+        #                 iam.PolicyStatement(
+        #                     actions=["dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:GetItem", "dynamodb:Scan", "dynamodb:Query"],
+        #                     resources=[
+        #                         wafrPillarQuestionPromptsTable.table_arn,
+        #                         wafrRunsTable.table_arn
+        #                     ],
+        #                     conditions={
+        #                         "StringEquals": {
+        #                             "aws:ResourceAccount": self.account
+        #                         }
+        #                     },
+        #                     effect=iam.Effect.ALLOW
+        #                 ),
+        #                 iam.PolicyStatement(
+        #                     actions=[
+        #                         "s3:PutObject",
+        #                         "s3:GetObject",
+        #                         "s3:ListBucket"
+        #                     ],
+        #                     resources=[
+        #                         f"arn:aws:s3:::wafr-prompts-{entryTimestamp}/*",
+        #                         f"arn:aws:s3:::wafr-accelerator-ui-{entryTimestamp}",
+        #                         f"arn:aws:s3:::wafr-accelerator-ui-{entryTimestamp}/*",
+        #                         f"arn:aws:s3:::wafr-accelerator-upload-{entryTimestamp}/*"
+        #                     ],
+        #                     conditions={
+        #                         "StringEquals": {
+        #                             "aws:ResourceAccount": self.account
+        #                         }
+        #                     },
+        #                     effect=iam.Effect.ALLOW
+        #                 ),
+        #                 iam.PolicyStatement(
+        #                     actions=[
+        #                         "bedrock:InvokeModel",
+        #                         "bedrock:InvokeModelWithResponseStream"
+        #                     ],
+        #                     resources=[
+        #                         f"arn:aws:bedrock:{self.region}::foundation-model/anthropic.claude-3-5-sonnet-20240620-v1:0"
+        #                     ],
+        #                     effect=iam.Effect.ALLOW
+        #                 ),
+        #                 iam.PolicyStatement(
+        #                     actions=[
+        #                         "bedrock:Retrieve"
+        #                     ],
+        #                     resources=[
+        #                         f"arn:aws:bedrock:{self.region}:{self.account}:knowledge-base/{KB_ID}",
+        #                         f"arn:aws:bedrock:{self.region}:{self.account}:knowledge-base/{KB_ID}/*"
+        #                     ],
+        #                     effect=iam.Effect.ALLOW
+        #                 ),
+        #                 iam.PolicyStatement(
+        #                     actions=[
+        #                         "bedrock:ApplyGuardrail"
+        #                     ],
+        #                     resources=[
+        #                         f"arn:aws:bedrock:{self.region}:{self.account}:guardrail/{GUARDRAIL_ID}"
+        #                     ],
+        #                     effect=iam.Effect.ALLOW
+        #                 ),
+                        
+        #                 iam.PolicyStatement(
+        #                     actions=[
+        #                         "sqs:SendMessage",
+        #                         "sqs:ReceiveMessage",
+        #                         "sqs:DeleteMessage",
+        #                         "sqs:GetQueueAttributes",
+        #                         "sqs:GetQueueUrl"
+        #                     ],
+        #                     resources=[
+        #                         f"arn:aws:sqs:{self.region}:{self.account}:{DEAD_LETTER_QUEUE_UNIQUE_NAME}",
+        #                         f"arn:aws:sqs:{self.region}:{self.account}:{WAFR_ACCELERATOR_QUEUE_UNIQUE_NAME}"
+        #                     ],
+        #                     effect=iam.Effect.ALLOW
+        #                 ),
+        #                 iam.PolicyStatement(
+        #                     actions=[
+        #                         "ssm:GetParameter",
+        #                         "ssm:GetParameters",
+        #                         "ssm:GetParametersByPath",
+        #                         "ssm:PutParameter",
+        #                         "ssm:DeleteParameter",
+        #                         "ssm:DeleteParameters",
+        #                         "ssm:DescribeParameters",
+        #                         "ssm:LabelParameterVersion"
+        #                     ],
+        #                     resources=[f"arn:aws:ssm:{self.region}:{self.account}:parameter/wafr-accelerator/*"]
+        #                 ),
+        #                 iam.PolicyStatement(
+        #                     actions=[
+        #                         "textract:StartDocumentAnalysis",
+        #                         "textract:StartDocumentTextDetection",
+        #                         "textract:GetDocumentAnalysis",
+        #                         "textract:GetDocumentTextDetection"
+        #                     ],
+        #                     resources=["*"]  
+        #                 ),
+        #                 iam.PolicyStatement(
+        #                 actions=[
+        #                     "wellarchitected:CreateWorkload",
+        #                     "wellarchitected:UpdateWorkload",
+        #                     "wellarchitected:UpdateAnswer",
+        #                     "wellarchitected:GetAnswer",
+        #                     "wellarchitected:ListAnswers",
+        #                     "wellarchitected:ListLensReviewImprovements",
+        #                     "wellarchitected:ListWorkloads"
+        #                 ],
+        #                 resources=["*"]  
+        #                 )
+        #             ]
+        #         )
+        #     }
+        # )
         
         #Reading user_data_script.sh file which contains the linux commands that must be run when the EC2 boots up.
         with open("user_data_script.sh", "r", encoding='UTF-8') as f:
@@ -724,6 +928,8 @@ class WafrGenaiAcceleratorStack(Stack):
                 "PARAMETER_3_LOGIN_PAGE" : PARAMETER_3_LOGIN_PAGE, 
                 "PARAMETER_COGNITO_USER_POOL_ID" : PARAMETER_COGNITO_USER_POOL_ID ,
                 "PARAMETER_COGNITO_USER_POOL_CLIENT_ID" : PARAMETER_COGNITO_USER_POOL_CLIENT_ID,
+                "GUARDRAIL_ID" : GUARDRAIL_ID or 'Not Selected', 
+                
             },
             role = replaceUITokensFunctionRole,
             events=[lambda_events.S3EventSource(bucket=wafrUIBucket, events=[s3.EventType.OBJECT_CREATED], filters=[s3.NotificationKeyFilter(prefix="tokenized-pages/", suffix=".py")])]
@@ -1081,6 +1287,10 @@ class WafrGenaiAcceleratorStack(Stack):
         alb.node.add_dependency(ec2_create)
         target_group.node.add_dependency(ec2_create)
         cdn.node.add_dependency(alb)
+
+        if(optional_features.get("guardrails", "False") == "True"):
+            if(GUARDRAIL_ID):
+                replaceUITokensFunction.node.add_dependency(bedrock_guardrail)
 
         wafrUIBucketDeploy.node.add_dependency(replaceUITokensFunction)
         
