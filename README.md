@@ -28,6 +28,13 @@ This sample aims to accelerate AWS Well-Architected Framework Review (WAFR) velo
 	* Initial selection of choices for each of the question based on the assessment.
 	* Notes populated with the generated assessment.
 
+## Optional / Configurable Features
+
+* [Amazon Bedrock Guardrails](https://aws.amazon.com/bedrock/guardrails/) - initial set of Amazon Bedrock Guardrail configurations for Responsible AI. 
+	* Default - Enabled
+
+_* Note: The above list of features can be individually enabled and disabled by updating the 'optional_features' JSON object in 'app.py' file._
+
 ## Technical Architecture
 
  ![WAFR Accelerator System Architecture Diagram](sys-arch.png)<br/> 
