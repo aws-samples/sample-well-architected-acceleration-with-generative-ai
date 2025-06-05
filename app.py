@@ -15,10 +15,15 @@ app = cdk.App()
 #     "CostCenter": "12345"
 # }
 tags = {
-    "Project": "WAFR Accelerator"
+    "Project": "WellArchitectedReview"
 }
 
-WafrGenaiAcceleratorStack(app, "WellArchitectedReviewUsingGenAIStack", tags=tags,
+# Flags for optional features
+optional_features = {
+    "guardrails": "True",
+}
+
+WafrGenaiAcceleratorStack(app, "WellArchitectedReviewUsingGenAIStack", tags=tags, optional_features=optional_features,
     # If you don't specify 'env', this stack will be environment-agnostic.
     # Account/Region-dependent features and context lookups will not work,
     # but a single synthesized template can be deployed anywhere.
@@ -31,7 +36,7 @@ WafrGenaiAcceleratorStack(app, "WellArchitectedReviewUsingGenAIStack", tags=tags
     # Uncomment the next line if you know exactly what Account and Region you
     # want to deploy the stack to. */
 
-    #env=cdk.Environment(account='111122223333', region='us-west-2'),
+    #env=cdk.Environment(account='**********', region='us-west-2'),
 
     #For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
 
