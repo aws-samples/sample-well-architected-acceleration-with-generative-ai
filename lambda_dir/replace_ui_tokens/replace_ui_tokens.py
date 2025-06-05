@@ -18,8 +18,9 @@ PARAMETER_2_EXISTING_WAFR_REVIEWS=os.environ['PARAMETER_2_EXISTING_WAFR_REVIEWS'
 PARAMETER_UI_SYNC_INITAITED_FLAG=os.environ['PARAMETER_UI_SYNC_INITAITED_FLAG'] 
 PARAMETER_3_LOGIN_PAGE=os.environ['PARAMETER_3_LOGIN_PAGE'] 
 PARAMETER_COGNITO_USER_POOL_ID = os.environ['PARAMETER_COGNITO_USER_POOL_ID'] 
-PARAMETER_COGNITO_USER_POOL_CLIENT_ID = os.environ['PARAMETER_COGNITO_USER_POOL_CLIENT_ID'] 
-                
+PARAMETER_COGNITO_USER_POOL_CLIENT_ID = os.environ['PARAMETER_COGNITO_USER_POOL_CLIENT_ID']
+GUARDRAIL_ID = os.environ['GUARDRAIL_ID'] 
+
 ssm_client = boto3.client('ssm')
 s3Client = boto3.client('s3')
 s3Resource = boto3.resource('s3')
@@ -75,7 +76,8 @@ except Exception as e:
     logger.info("PARAMETER_3_LOGIN_PAGE: " + PARAMETER_3_LOGIN_PAGE)
     logger.info("PARAMETER_COGNITO_USER_POOL_ID: " + PARAMETER_COGNITO_USER_POOL_ID)
     logger.info("PARAMETER_COGNITO_USER_POOL_CLIENT_ID: " + PARAMETER_COGNITO_USER_POOL_CLIENT_ID)
-                
+    logger.info("GUARDRAIL_ID: " + GUARDRAIL_ID)
+
     logger.info(json.dumps(event))
 
     status = 'Everything done successfully - token update, s3 script creation and execution!'
@@ -125,7 +127,8 @@ except Exception as e:
                 
                 updated_content = re.sub(r'{{REGION}}', REGION_NAME, file_content)
                 updated_content = re.sub(r'{{WAFR_ACCELERATOR_RUNS_DD_TABLE_NAME}}', WAFR_RUNS_TABLE, updated_content)
-                                           
+                updated_content = re.sub(r'{{GUARDRAIL_ID}}', GUARDRAIL_ID, updated_content)
+                
                 # Write the updated content to the output key
                 s3Client.put_object(Bucket=bucket, Key=output_key, Body=updated_content.encode('utf-8'))
                 
