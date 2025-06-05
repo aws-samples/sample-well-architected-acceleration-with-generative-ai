@@ -273,11 +273,19 @@ def main():
                 ],
             })
 
-            streaming_response = client.invoke_model_with_response_stream(
-                modelId=model_id,
-                body=body,
-            )
-
+            if("{{GUARDRAIL_ID}}" == "Not Selected"):
+                streaming_response = client.invoke_model_with_response_stream(
+                    modelId=model_id,
+                    body=body
+                )
+            else: # Use guardrails
+                streaming_response = client.invoke_model_with_response_stream(
+                    modelId=model_id,
+                    body=body,
+                    guardrailIdentifier="{{GUARDRAIL_ID}}",
+                    guardrailVersion="DRAFT",
+                )
+                
             st.subheader("Response")
             stream = streaming_response.get("body")
             st.write_stream(parse_stream(stream))
