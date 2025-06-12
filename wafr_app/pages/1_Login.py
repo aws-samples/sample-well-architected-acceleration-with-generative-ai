@@ -1,8 +1,8 @@
 import streamlit as st
 import boto3
-import botocore
-import os
 import logging
+
+from connections import Connections as env
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -11,22 +11,22 @@ logger = logging.getLogger(__name__)
 # Set page configuration
 st.set_page_config(page_title="Login", layout="wide")
 
+ssm_parameter_store = boto3.client("ssm", region_name=env.REGION_NAME)
 
 # Cognito configuration
-COGNITO_USER_POOL_ID = '{{PARAMETER_COGNITO_USER_POOL_ID}}'
-COGNITO_APP_CLIENT_ID = '{{PARAMETER_COGNITO_USER_POOL_CLIENT_ID}}'
-COGNITO_REGION = '{{REGION}}'
+COGNITO_APP_CLIENT_ID = ssm_parameter_store.get_parameter(
+    Name=env.SSM_PARAMETER_COGNITO_APP_CLIENT_ID, WithDecryption=True
+)["Parameter"]["Value"]
 
-if not COGNITO_USER_POOL_ID or not COGNITO_APP_CLIENT_ID:
-    st.error("Cognito configuration is missing. Please check your SSM parameters or environment variables.")
+if not COGNITO_APP_CLIENT_ID:
+    st.error("Cognito client id is missing. Please check your SSM parameters or environment variables.")
     st.stop()
 
-logger.info(f"Cognito User Pool ID: {COGNITO_USER_POOL_ID}")
 logger.info(f"Cognito App Client ID: {COGNITO_APP_CLIENT_ID}")
-logger.info(f"Cognito Region: {COGNITO_REGION}")
+logger.info(f"Region: {env.REGION_NAME}")
 
 def authenticate(username, password):
-    client = boto3.client('cognito-idp', region_name=COGNITO_REGION)
+    client = boto3.client('cognito-idp', region_name=env.REGION_NAME)
     try:
         resp = client.initiate_auth(
             ClientId=COGNITO_APP_CLIENT_ID,

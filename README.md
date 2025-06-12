@@ -1,20 +1,11 @@
 # Sample AWS Well-Architected Review (WAFR) Acceleration with Generative AI (GenAI)
 
-## Name
-
-AWS Well-Architected Framework Review (WAFR) Acceleration with Generative AI (GenAI)
-<br/> 
-## Description
 
 This is a comprehensive sample designed to facilitate and expedite the AWS Well-Architected Framework Review process. 
-<br/> 
 
 This sample aims to accelerate AWS Well-Architected Framework Review (WAFR) velocity and adoption by leveraging the power of generative AI to provide organizations with automated comprehensive analysis and recommendations for optimizing their AWS architectures.
-<br/> 
 
 ## Core Features
-
-<br/>
 
 * Ability to upload technical content (for example solution design and architecture documents) to be reviewed in PDF format<br/> 
 * Creation of architecture assessment including:
@@ -39,74 +30,57 @@ _* Note: The above list of features can be individually enabled and disabled by 
 
  ![WAFR Accelerator System Architecture Diagram](sys-arch.png)<br/> 
 
-## Implementation Guide
+## Folder and Files
+
+* The `lambda_dir` contains the Amazon Lambda Python code files for the multiple Amazon Lambdas that are used in the Amazon Step Function state machine.
+
+* The `wafr_app` folder is the front end application as a container.
+
+* The `wafr_genai_accelerator` folder contains the AWS CDK file `wafr_genai_accelerator_stack.py` used to generate the Amazon resources.
+
+* The `wafr-prompts` folder contains the prompts used by the AI.
+
+* The `well_architected_docs` folder contains the Amazon Well-Architected Framework .pdf files that are uploaded to S3 to be used by the Amazon Bedrock model. To refresh the documents with the latest releases of the Well-Architected Framework run the `download_pdf_files.sh` script and then:<br/> 
+	1.	Upload the files to the knowledge base bucket created by the stack, adhering to the folder structure and file names.<br/> 
+	2.	On AWS management console go to Amazon Bedrock -> Knowledge bases -> Click on the knowledge base created by the stack-> Data Source -> Sync. This will re-sync the knowledge base from the S3 bucket.
+
+
+## Set up
 
 ### Pre-requisites
 * Ensure you have access to the following models in Amazon Bedrock:
 	* Titan Text Embeddings V2
-	* Claude 3-5 Sonnet
+	* Claude 3-5 Sonnet (not possible in eu-west-2)
+	* Claude 3 Sonnet (for eu-west-2)
 
-### Cloning Repository
-
-Clone the repository to your local directory. You can use the following command:<br/> 
-```
-git clone https://github.com/aws-samples/sample-well-architected-acceleration-with-generative-ai.git
-```
-Alternatively, you can download the code as a zip file.
-
-### Code Download
-
-Download the compressed source code. You can do this by selecting the ‘Code’ drop down menu on top right side.<br/> 
-If you downloaded the .zip file, you can use the following command:<br/> 
+* Install the AWS CDK
 
 ```
-unzip sample-well-architected-acceleration-with-generative-ai-main.zip
-```
-```
-cd sample-well-architected-acceleration-with-generative-ai-main/
+npm install -g aws-cdk
 ```
 
-### Preparing and populating Amazon Bedrock Knowledge Base with AWS Well-Architected Reference Documents
+* Install Podman or Docker:
+	* For Podman have to install the tool, download a VM and start it.
 
-Amazon Bedrock knowledge base is driven by the AWS Well-Architected documents. Download the documents in the PDF format and put them under 'well_architected_docs' folder. These should be populated before the build for them to be ingested during the build. Delete the default README.MD from the 'well_architected_docs' folder. 
- <br/>  <br/> 
- ![Well-Architected Document Link](graphics/walink.png)<br/> 
- <br/> 
+```
+brew install podman
+```
+```
+podman machine init
+```
+```
+podman machine start --log-level debug
+```
 
-**AWS Well-Architected Framework Overview:** (place it under 'well_architected_docs/overview' subfolder)
- <br/> 
+* Update the AWS CDK source files if change the AWS Region or AWS account number. Open the `app.py` file, pick one of the following lines based on your deployment location:
 
- * [Overview](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
-
-**AWS Well-Architected Framework pillar documents:** (place them under 'well_architected_docs/wellarchitected' subfolder)
- <br/> 
- 
- * [Operational Excellence](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html)
- 
- * [Security](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html)
- 
- * [Reliability](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html)
- 
- * [Performance efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html)
- 
- * [Cost optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html)
- 
- * [Sustainability](https://docs.aws.amazon.com/wellarchitected/latest/sustainability-pillar/sustainability-pillar.html)
-
-Repeat the above for:<br/>
- 
- **[Financial Services Industry Lens:](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/financial-services-industry-lens.html)** Place it under 'well_architected_docs/financialservices' subfolder. 
-
- **[Data Analytics Lens:](https://docs.aws.amazon.com/wellarchitected/latest/analytics-lens/analytics-lens.html)**  Place it under 'well_architected_docs/dataanalytics' subfolder.  
-
-The 'well_architected_docs' folder would now look like as below:<br/> <br/> 
-![Well-Architected Docs Bucket](graphics/kbbucket.png)<br/>  
-
-* Note: At present, only the above Well-Architected lenses are supported.
-
-* Note: If you missed this step or would like to refresh the documents with further releases of Well-Architected Framework then:
-	* Upload the files to the knowledge base bucket created by the stack, adhering to the above folder structure. 
-	* On AWS management console, go to Amazon Bedrock -> Knowledge bases -> Click on the knowledge base created by the stack-> Data Source -> Sync. This will re-sync the knowledge base from the S3 bucket. <br/> 
+```
+#env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
+```
+Or
+```
+#env=cdk.Environment(account='*********', region='us-west-2'),
+```
 
 ### CDK Deployment 
 
@@ -135,91 +109,48 @@ Once the virtualenv is activated, you can install the required dependencies.
 pip3 install -r requirements.txt
 ```    
 
-Open "wafr_genai_accelerator/wafr_genai_accelerator_stack.py" file using a file editor such as nano and update the Cloundfront [managed prefix list](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/LocationsOfEdgeServers.html) for your deployment region. As a default, it uses 'us-west-2' managed prefix list.
-
-
-```
-alb_security_group.add_ingress_rule(
-	ec2.Peer.prefix_list("pl-82a045eb"),
-	ec2.Port.HTTP, 
-	"Allow inbound connections only from Cloudfront to Streamlit port"
-)
-```
-
-Open app.py, update and uncomment either of the following lines based on your deployment location:
+* Export this command when create a new Terminal screen if using Podman:
 
 ```
-#env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
-```
-Or
-```
-#env=cdk.Environment(account='111122223333', region='us-west-2'),
+export CDK_DOCKER=podman
 ```
 
-If you are deploying CDK for the first time in your account, run the below command (if not, skip this step):
+* If you are deploying AWS CDK for the first time in the AWS account, run the below command (if not, skip this step):
 
 ```
 cdk bootstrap
 ```
 
-At this point you can now synthesize the CloudFormation template for this code.
+* At this point you can now synthesize the CloudFormation template for this code.
 
 ```
 cdk synth
 ```
 
-You can now deploy the CDK stack:
+* You can now deploy the CDK stack:
 
 ```
 cdk deploy
 ```
 
-You will need to enter 'y' to confirm the deployment. The deployment can take around 20-25 minutes to complete. 
-<br/> 
+**You will need to enter 'y' to confirm the deployment. The deployment can take around 20-25 minutes to complete.**
 
-### Demo configurations
+The first time running Podman and AWS CDK it will take some time to download the necessary images locally.
 
-On the cdk build completion, you would see three outputs:<br/>
-	a) Amazon Cognito user pool name <br/> 
-	b) Front end UI EC2 instance id <br/> 
-    c) Amazon Cloudfront URL for the web application 
-<br/> 
+On the cdk build completion, you would see three outputs:
+	a) Amazon Cognito user pool name.
+	b) ECS Fargate ALB URL.
+	c) Amazon Cloudfront URL for the web application.
 
-##### Add a user to Amazon Cognito user pool
+### Add a user to Amazon Cognito user pool
 
-Firstly, [add a user to the Amazon Cognito pool](https://docs.aws.amazon.com/cognito/latest/developerguide/how-to-create-user-accounts.html#creating-a-new-user-using-the-console) indicated in the output. You would use this user credentials for application login later on. 
+[Manually add a new user to the Amazon Cognito pool](https://docs.aws.amazon.com/cognito/latest/developerguide/how-to-create-user-accounts.html#creating-a-new-user-using-the-console) indicated in the output. You would use this user credentials for application login later on. 
 
-##### EC2 sanity check
+### Run the Web Application
 
-Next, login to the EC2 the instance as ec2-user (for example using EC2 Instance Connect) and check if the front end user interface folder has been synced. 
+The Frontend is hosted via the ECS Fargate. It uses Streamlit. Streamlit converts Python files into a Frontend UI. 
 
-```
-cd /wafr-accelerator
-ls -l 
-```
-
-If there is no "pages" folder then sync the front end user interface as below.
-
-```
-python3 syncUIFolder.py
-```
-
-Ensure /wafr-accelerator and all the files underneath are owned by ec2-user. If not then execute the following.
-
-```
-sudo chown -R ec2-user:ec2-user /wafr-accelerator
-```
-
-##### Running the application
-
-Once the UI folder has been synced, run the application as below
-
-```
-streamlit run WAFR_Accelerator.py
-``` 
-
-You can now use the Amazon Cloudfront URL from the CDK output to access the sample application in a web browser.
-<br/> 
+You can now use either the ECS Fargate ALB URL or the Amazon Cloudfront URL from the CDK output to access the sample application in a web browser.
 
 ### Testing the demo application
 
@@ -260,7 +191,7 @@ To chat with the uploaded document as well as any of the generated content by us
 ![WAFR chat](graphics/chat.png)<br/> 
 <br/> 
 
-### Uninstall - CDK Undeploy 
+## Uninstall the AWS CDK deployment
 
 If you no longer need the application or would like to delete the CDK deployment, run the following command:
 
@@ -268,10 +199,15 @@ If you no longer need the application or would like to delete the CDK deployment
 cdk destroy
 ```
 
-### Additional considerations
+**Once started there is a manual step to enter 'y' to continue the deployment.**
+
+If one of the S3 Bucket contains any objects the destroy command can fail. Manually remove the objects and re-run the command.
+
+## Additional considerations
+
 Please see [Additional Considerations](Additional%20Considerations.md)
 
 
-### Disclaimer
+## Disclaimer
 This is a sample code, for non-production usage. You should work with your security and legal teams to meet your organizational security, regulatory and compliance requirements before deployment.
 

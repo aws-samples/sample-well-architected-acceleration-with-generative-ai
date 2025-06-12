@@ -10,7 +10,7 @@ def architecture():
     st.title("Architecture")
 
     st.header("AWS Well-Architected Acceleration with Generative AI Architecture")
-    st.image("sys-arch.png", use_container_width=True)
+    st.image("sys-arch.png")
 
     st.header("Components")
     st.write("""
