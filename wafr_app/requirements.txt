@@ -1,0 +1,7 @@
+streamlit==1.37.0
+streamlit_chat==0.1.1
+boto3>=1.34.26
+awscli
+streamlit-authenticator
+numpy
+python-dotenv 

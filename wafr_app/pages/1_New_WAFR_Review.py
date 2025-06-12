@@ -5,6 +5,7 @@ import json
 import datetime
 from boto3.dynamodb.conditions import Attr
 from botocore.exceptions import ClientError
+from connections import Connections as env
 
 # Check authentication
 if 'authenticated' not in st.session_state or not st.session_state['authenticated']:
@@ -15,7 +16,7 @@ st.set_page_config(page_title="Create WAFR Analysis", layout="wide")
 
 # Initialize AWS clients
 s3_client = boto3.client('s3')
-well_architected_client = boto3.client('wellarchitected', region_name="{{REGION}}")
+well_architected_client = boto3.client("wellarchitected", region_name=env.REGION_NAME)
 
 def list_static_lenses():
 
@@ -97,8 +98,8 @@ def upload_to_s3(file, bucket, key):
 
 def trigger_wafr_review(input_data):
     try:
-        sqs = boto3.client('sqs', region_name="{{REGION}}")
-        queue_url = '{{SQS_QUEUE_NAME}}'
+        sqs = boto3.client('sqs', region_name=env.REGION_NAME)
+        queue_url = env.SQS_QUEUE_NAME
         message_body = json.dumps(input_data)
         response = sqs.send_message(
             QueueUrl=queue_url,
@@ -114,7 +115,7 @@ def create_wafr_analysis(analysis_data, uploaded_file):
 
     if uploaded_file:
         s3_key = f"{analysis_data['created_by']}/analyses/{analysis_id}/{uploaded_file.name}"
-        if not upload_to_s3(uploaded_file, "{{WAFR_UPLOAD_BUCKET_NAME}}", s3_key):
+        if not upload_to_s3(uploaded_file, env.UPLOAD_BUCKET_NAME, s3_key):
             return False, "Failed to upload document to S3."
     else:
         return False, "No document uploaded. Please upload a document before creating the analysis."
@@ -137,8 +138,8 @@ def create_wafr_analysis(analysis_data, uploaded_file):
 
     message_id = trigger_wafr_review(wafr_review_input)
     if message_id:
-        dynamodb = boto3.resource('dynamodb', region_name="{{REGION}}")
-        wafr_accelerator_runs_table = dynamodb.Table('{{WAFR_ACCELERATOR_RUNS_DD_TABLE_NAME}}')
+        dynamodb = boto3.resource('dynamodb', region_name=env.REGION_NAME)
+        wafr_accelerator_runs_table = dynamodb.Table(env.WAFR_RUNS_TABLE)
         
         creation_date = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
         
@@ -246,8 +247,8 @@ def duplicate_wa_tool_workload(workload_name):
         
 def duplicate_wafr_accelerator_workload(workload_name):
     try:
-        dynamodb = boto3.resource('dynamodb', region_name="{{REGION}}")
-        wafr_accelerator_runs_table = dynamodb.Table('{{WAFR_ACCELERATOR_RUNS_DD_TABLE_NAME}}')
+        dynamodb = boto3.resource('dynamodb', region_name=env.REGION_NAME)
+        wafr_accelerator_runs_table = dynamodb.Table(env.WAFR_RUNS_TABLE)
         
         filter_expression = Attr("analysis_title").eq(workload_name)
         

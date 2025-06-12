@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
-import datetime
 import boto3
 import json
 from boto3.dynamodb.types import TypeDeserializer
-import pytz
 import dotenv
+from connections import Connections as env
 
 # Check authentication
 if 'authenticated' not in st.session_state or not st.session_state['authenticated']:
@@ -26,24 +25,26 @@ if st.sidebar.button('Logout'):
 
 dotenv.load_dotenv()
 
-client = boto3.client("bedrock-runtime", region_name = "{{REGION}}")
-model_id = "anthropic.claude-3-5-sonnet-20240620-v1:0" 
+client = boto3.client("bedrock-runtime", region_name=env.REGION_NAME)
+model_id = "anthropic.claude-3-5-sonnet-20240620-v1:0"
 
+if env.REGION_NAME == "eu-west-2":
+    model_id = "anthropic.claude-3-sonnet-20240229-v1:0"
 
 def load_data():
     # Initialize DynamoDB client
-    dynamodb = boto3.client('dynamodb', region_name='{{REGION}}') 
+    dynamodb = boto3.client('dynamodb', region_name=env.REGION_NAME) 
     
     try:
         # Scan the table
-        response = dynamodb.scan(TableName='{{WAFR_ACCELERATOR_RUNS_DD_TABLE_NAME}}')
+        response = dynamodb.scan(TableName=env.WAFR_RUNS_TABLE)
         
         items = response['Items']
         
         # Continue scanning if we haven't scanned all items
         while 'LastEvaluatedKey' in response:
             response = dynamodb.scan(
-                TableName='{{WAFR_ACCELERATOR_RUNS_DD_TABLE_NAME}}',
+                TableName=env.WAFR_RUNS_TABLE,
                 ExclusiveStartKey=response['LastEvaluatedKey']
             )
             items.extend(response['Items'])
@@ -273,7 +274,7 @@ def main():
                 ],
             })
 
-            if("{{GUARDRAIL_ID}}" == "Not Selected"):
+            if(env.GUARDRAIL_ID == "Not Selected"):
                 streaming_response = client.invoke_model_with_response_stream(
                     modelId=model_id,
                     body=body
@@ -282,7 +283,7 @@ def main():
                 streaming_response = client.invoke_model_with_response_stream(
                     modelId=model_id,
                     body=body,
-                    guardrailIdentifier="{{GUARDRAIL_ID}}",
+                    guardrailIdentifier=env.GUARDRAIL_ID,
                     guardrailVersion="DRAFT",
                 )
                 
