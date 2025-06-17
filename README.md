@@ -32,6 +32,8 @@ This sample aims to accelerate AWS Well-Architected Framework Review (WAFR) velo
 
 * [Amazon Bedrock Guardrails](https://aws.amazon.com/bedrock/guardrails/) - initial set of Amazon Bedrock Guardrail configurations for Responsible AI. 
 	* Default - Enabled
+* Amazon OpenSearch Serverless disable redundancy - by default, each Amazon OpenSearch Serverless collection has redundancy and has its own standby replicas in a different Availability Zone. This option allows you to disable redundancy to reduce overall stack cost during development and testing. See Amazon OpenSearch Serverless [How it works](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-overview.html#serverless-process) for more details.
+	* Default - Enabled
 
 _* Note: The above list of features can be individually enabled and disabled by updating the 'optional_features' JSON object in 'app.py' file._
 
