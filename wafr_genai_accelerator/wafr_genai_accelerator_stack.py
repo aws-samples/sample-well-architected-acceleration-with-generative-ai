@@ -38,7 +38,8 @@ from aws_cdk import Duration
 import re
 
 from cdklabs.generative_ai_cdk_constructs import (
-    bedrock 
+    bedrock,
+    opensearchserverless
 )
 import json
 import datetime
@@ -71,17 +72,32 @@ class WafrGenaiAcceleratorStack(Stack):
         for key, value in tags.items():
             Tags.of(self).add(key, value)
         
-        #Creates Bedrock KB using the generative_ai_cdk_constructs. More info: https://github.com/awslabs/generative-ai-cdk-constructs
-        kb = bedrock.KnowledgeBase(self, 'WAFR-KnowledgeBase', 
-                    embeddings_model= bedrock.BedrockFoundationModel.TITAN_EMBED_TEXT_V2_1024, 
-                    instruction=  'Use this knowledge base to answer questions about AWS Well Architected Framework Review (WAFR).',
-                    description= 'This knowledge base contains AWS Well Architected Framework Review (WAFR) reference documents'
-                )
+        # Flags for optional features
+        optional_features = optional_features or {}
+          
+        # STANDBY_REPLICAS disabled by default
+        if(optional_features.get("openSearchReducedRedundancy", "True") == "False"):
+            STANDBY_REPLICAS = opensearchserverless.VectorCollectionStandbyReplicas.ENABLED
+        else:
+            STANDBY_REPLICAS = opensearchserverless.VectorCollectionStandbyReplicas.DISABLED
+            
+        vector_store = opensearchserverless.VectorCollection (
+            self, 
+            'WAFR-VectorStore',
+            standby_replicas = STANDBY_REPLICAS,
+            collection_type = opensearchserverless.VectorCollectionType.VECTORSEARCH,
+            description = 'This vector store contains AWS Well Architected Framework Review (WAFR) reference documents'
+        )
+        
+        kb = bedrock.VectorKnowledgeBase(self, "WAFR-KnowledgeBase", 
+            vector_store=vector_store,
+            embeddings_model= bedrock.BedrockFoundationModel.TITAN_EMBED_TEXT_V2_1024, 
+            instruction=  'Use this knowledge base to answer questions about AWS Well Architected Framework Review (WAFR).',
+            description= 'This knowledge base contains AWS Well Architected Framework Review (WAFR) reference documents'
+        )
         
         KB_ID = kb.knowledge_base_id
 
-        # Flags for optional features
-        optional_features = optional_features or {}
         GUARDRAIL_ID = None
         # Only create Guardrails if user has selected it 
         if(optional_features.get("guardrails", "False") == "True"):
@@ -238,9 +254,7 @@ class WafrGenaiAcceleratorStack(Stack):
             bucket= wafrReferenceDocsBucket,
             knowledge_base=kb,
             data_source_name='wafr-reference-docs',
-            chunking_strategy = bedrock.ChunkingStrategy.FIXED_SIZE,
-            max_tokens=500,
-            overlap_percentage=20
+            chunking_strategy = bedrock.ChunkingStrategy.FIXED_SIZE
         )
         
         # Data Ingestion Params
@@ -469,7 +483,7 @@ class WafrGenaiAcceleratorStack(Stack):
                 )
             }
         )
-       
+
         #Reading user_data_script.sh file which contains the linux commands that must be run when the EC2 boots up.
         with open("user_data_script.sh", "r", encoding='UTF-8') as f:
             user_data_script = f.read()
@@ -643,8 +657,7 @@ class WafrGenaiAcceleratorStack(Stack):
                 require_symbols=True
             ),
             account_recovery=cognito.AccountRecovery.EMAIL_ONLY,
-            removal_policy=RemovalPolicy.DESTROY,
-            advanced_security_mode=cognito.AdvancedSecurityMode.ENFORCED
+            removal_policy=RemovalPolicy.DESTROY
         )
     
         #Print the Cloudfront Public Domain Name after CDK Deployment for easier access
@@ -1070,21 +1083,17 @@ class WafrGenaiAcceleratorStack(Stack):
             self, "Wait", 
             time=sfn.WaitTime.duration(cdk.Duration.seconds(40))
         )
-     
+
+
+        process_chain = wait_state.next(generate_pillar_question_response_task)
+        
         # Define the Map state
         map_state = sfn.Map(
             self, "Loop through selected pillars",
             max_concurrency=1,
             items_path="$.all_pillar_prompts"
         )
-        
-        # Define the iterator chain
-        iterator_chain = sfn.Chain \
-            .start(wait_state) \
-            .next(generate_pillar_question_response_task)
-        
-        # Set the iterator
-        map_state.iterator(iterator_chain)
+        map_state.item_processor(process_chain)
 
         # Create a log group for the Step Function
         wafr_stepmachine_log_group = aws_logs.LogGroup(
@@ -1117,7 +1126,7 @@ class WafrGenaiAcceleratorStack(Stack):
                 level=sfn.LogLevel.ALL,
                 include_execution_data=False
             )
-        )        
+        )         
         
         startWafrReviewFunction = _lambda.Function(self, "startWafrReview",
             runtime=_lambda.Runtime.PYTHON_3_12,
@@ -1164,9 +1173,8 @@ class WafrGenaiAcceleratorStack(Stack):
         target_group.node.add_dependency(ec2_create)
         cdn.node.add_dependency(alb)
 
-        if(optional_features.get("guardrails", "False") == "True"):
-            if(GUARDRAIL_ID):
-                replaceUITokensFunction.node.add_dependency(bedrock_guardrail)
+        if(GUARDRAIL_ID):
+            replaceUITokensFunction.node.add_dependency(bedrock_guardrail)
 
         wafrUIBucketDeploy.node.add_dependency(replaceUITokensFunction)
         
