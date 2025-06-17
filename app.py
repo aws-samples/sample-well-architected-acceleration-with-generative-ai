@@ -21,6 +21,7 @@ tags = {
 # Flags for optional features
 optional_features = {
     "guardrails": "True",
+    "openSearchReducedRedundancy": "True"    
 }
 
 WafrGenaiAcceleratorStack(app, "WellArchitectedReviewUsingGenAIStack", tags=tags, optional_features=optional_features,
