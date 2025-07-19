@@ -67,49 +67,17 @@ unzip sample-well-architected-acceleration-with-generative-ai-main.zip
 ```
 cd sample-well-architected-acceleration-with-generative-ai-main/
 ```
+### Preparing and populating Amazon Bedrock Knowledge Base with AWS Well-Architected reference documents
 
-### Preparing and populating Amazon Bedrock Knowledge Base with AWS Well-Architected Reference Documents
+The Amazon Bedrock knowledge base is driven by AWS Well-Architected documents. These documents have been downloaded and placed in the 'well_architected_docs' folder for ease of deployment. They are ingested during the build. 
 
-Amazon Bedrock knowledge base is driven by the AWS Well-Architected documents. Download the documents in the PDF format and put them under 'well_architected_docs' folder. These should be populated before the build for them to be ingested during the build. Delete the default README.MD from the 'well_architected_docs' folder. 
- <br/>  <br/> 
- ![Well-Architected Document Link](graphics/walink.png)<br/> 
- <br/> 
-
-**AWS Well-Architected Framework Overview:** (place it under 'well_architected_docs/overview' subfolder)
- <br/> 
-
- * [Overview](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
-
-**AWS Well-Architected Framework pillar documents:** (place them under 'well_architected_docs/wellarchitected' subfolder)
- <br/> 
- 
- * [Operational Excellence](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html)
- 
- * [Security](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html)
- 
- * [Reliability](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html)
- 
- * [Performance efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html)
- 
- * [Cost optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html)
- 
- * [Sustainability](https://docs.aws.amazon.com/wellarchitected/latest/sustainability-pillar/sustainability-pillar.html)
-
-Repeat the above for:<br/>
- 
- **[Financial Services Industry Lens:](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/financial-services-industry-lens.html)** Place it under 'well_architected_docs/financialservices' subfolder. 
-
- **[Data Analytics Lens:](https://docs.aws.amazon.com/wellarchitected/latest/analytics-lens/analytics-lens.html)**  Place it under 'well_architected_docs/dataanalytics' subfolder.  
-
-The 'well_architected_docs' folder would now look like as below:<br/> <br/> 
-![Well-Architected Docs Bucket](graphics/kbbucket.png)<br/>  
-
-* Note: At present, only the above Well-Architected lenses are supported.
-
-* Note: If you missed this step or would like to refresh the documents with further releases of Well-Architected Framework then:
-	* Upload the files to the knowledge base bucket created by the stack, adhering to the above folder structure. 
-	* On AWS management console, go to Amazon Bedrock -> Knowledge bases -> Click on the knowledge base created by the stack-> Data Source -> Sync. This will re-sync the knowledge base from the S3 bucket. <br/> 
-
+Please refer to [Refreshing Amazon Bedrock Knowledge Base with latest AWS Well-Architected Reference Documents](refreshing_kb.md) for guidance on how to refresh the documents with future releases of the Well-Architected Framework after the build.
+<br/><br/>
+Currently, the following AWS Well-Architected lenses are supported:
+* AWS Well-Architected Framework Lens
+* Data Analytics Lens
+* Financial Services Industry Lens
+   
 ### CDK Deployment 
 
 Manually create a virtualenv on MacOS and Linux:
