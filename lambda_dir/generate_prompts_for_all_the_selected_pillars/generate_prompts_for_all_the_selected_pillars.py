@@ -291,7 +291,8 @@ def get_lens_filter(kb_bucket, wafr_lens):
     # Map lens prefixes to their corresponding lens names - will make it easier to add additional lenses
     lens_mapping = {
         "Financial Services Industry Lens": "financialservices",
-        "Data Analytics Lens": "dataanalytics"
+        "Data Analytics Lens": "dataanalytics",
+        "Generative AI Lens": "genai"
     }
     
     # Get lens name or default to "wellarchitected"

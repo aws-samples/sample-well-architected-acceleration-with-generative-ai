@@ -8,9 +8,9 @@
 
 ### AWS Well-Architected reference documents locations
 
-* **[AWS Well-Architected Framework Overview](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf):** (create 'overview' subfolder and uploaded the PDF file in it)
+* **[AWS Well-Architected Framework Overview](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf):** (create 'overview' subfolder and place the PDF file in it)
 
-* **AWS Well-Architected Framework pillar documents:** (create 'wellarchitected' subfolder and uploaded the PDF files in it)
+* **AWS Well-Architected Framework pillar documents:** (create 'wellarchitected' subfolder and place the PDF file in it)
  
 	* [Operational Excellence](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/operational-excellence-pillar/wellarchitected-operational-excellence-pillar.pdf)
 	* [Security](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/security-pillar/wellarchitected-security-pillar.pdf)
