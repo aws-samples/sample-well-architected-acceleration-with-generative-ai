@@ -190,9 +190,10 @@ class WafrGenaiAcceleratorStack(Stack):
         WAFR_REFERENCE_DOCS_BUCKET = wafrReferenceDocsBucket.bucket_name
 
         #Uploading WAFR docs to the corresponding S3 bucket [wafrReferenceDocsBucket]
-        wafrReferenceDeploy = s3deploy.BucketDeployment(self, "uploadwellarchitecteddocs",
+        wafrReferenceDeploy = s3deploy.BucketDeployment(self, "uploadwellarchitecteddocs1",
             sources=[s3deploy.Source.asset('well_architected_docs')],
-            destination_bucket=wafrReferenceDocsBucket
+            destination_bucket=wafrReferenceDocsBucket,
+            memory_limit = 2048
         )
         
         #S3 Bucket where customer design is stored
@@ -1164,6 +1165,7 @@ class WafrGenaiAcceleratorStack(Stack):
         # # ------------ Node dependencies ---------------------
         kbDataSource.node.add_dependency(wafrReferenceDocsBucket)
         ingestion_job_cr.node.add_dependency(kb)
+        ingestion_job_cr.node.add_dependency(wafrReferenceDeploy)
         
         ec2_create.node.add_dependency(kb)
 

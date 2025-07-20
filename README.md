@@ -76,6 +76,7 @@ Please refer to [Refreshing Amazon Bedrock Knowledge Base with latest AWS Well-A
 Currently, the following AWS Well-Architected lenses are supported:
 * AWS Well-Architected Framework Lens
 * Data Analytics Lens
+* Generative AI Lens
 * Financial Services Industry Lens
    
 ### CDK Deployment 

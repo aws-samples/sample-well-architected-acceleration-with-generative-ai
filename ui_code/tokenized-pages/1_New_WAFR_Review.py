@@ -23,10 +23,11 @@ def list_static_lenses():
     lenses["AWS Well-Architected Framework"] = "wellarchitected"
     lenses["Data Analytics Lens"] = "arn:aws:wellarchitected::aws:lens/dataanalytics"
     lenses["Financial Services Industry Lens"] = "arn:aws:wellarchitected::aws:lens/financialservices"
-    
+    lenses["Generative AI Lens"] = "arn:aws:wellarchitected::aws:lens/genai"
+
     return lenses
 
-# Not used as only 3 lenses are supported
+# Not used as only 4 lenses are supported
 def list_lenses(wa_client):
 
     next_token = None

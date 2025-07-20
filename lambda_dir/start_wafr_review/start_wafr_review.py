@@ -110,7 +110,7 @@ def do_quick_analysis (data, context):
     logger.info(f"KNOWLEDGE_BASE_ID: {KNOWLEDGE_BASE_ID}")
     logger.info(f"LLM_MODEL_ID: {LLM_MODEL_ID}")
     logger.info(f"BEDROCK_SLEEP_DURATION: {BEDROCK_SLEEP_DURATION}")
-    logger.info(f"BEDROCK_SLEEP_DURATION: {BEDROCK_MAX_TRIES}")
+    logger.info(f"BEDROCK_MAX_TRIES: {BEDROCK_MAX_TRIES}")
     
     wafr_accelerator_runs_table = dynamodb.Table(WAFR_ACCELERATOR_RUNS_DD_TABLE_NAME)
     wafr_prompts_table = dynamodb.Table(WAFR_PROMPT_DD_TABLE_NAME)
@@ -252,9 +252,8 @@ def do_quick_analysis (data, context):
     logger.debug (f"do_quick_analysis checkpoint 9")
     
     exit_timeestamp = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S-%f")
-    logger.info("Exiting start_wafr_review at " + exit_timeestamp)
+    logger.info("Exiting do_quick_analysis at " + exit_timeestamp)
     
-
 def extract_document_text(upload_bucket_name, document_s3_key, output_bucket, wafr_accelerator_runs_table, wafr_accelerator_run_key, region):
 
     textract_config = Config(retries = dict(max_attempts = 5))
@@ -405,9 +404,9 @@ def invoke_bedrock(streaming, claude_prompt_body, pillar_review_output_filename,
             else:
                 non_streaming_response = bedrock_client.invoke_model(
                     modelId=LLM_MODEL_ID,
-                    body=claude_prompt_body,
+                    body=claude_prompt_body
                 )
-                
+
                 response_json = json.loads(non_streaming_response["body"].read().decode("utf-8"))
         
                 logger.info (response_json)
@@ -438,7 +437,8 @@ def get_lens_filter(kb_bucket, wafr_lens):
     # Map lens prefixes to their corresponding lens names - allows for additional of lenses
     lens_mapping = {
         "Financial Services Industry Lens": "financialservices",
-        "Data Analytics Lens": "dataanalytics"
+        "Data Analytics Lens": "dataanalytics",
+        "Generative AI Lens": "genai"
     }
     
     # Get lens name or default to "wellarchitected"

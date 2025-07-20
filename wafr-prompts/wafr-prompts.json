@@ -126,6 +126,48 @@
             "wafr_pillar": "Sustainability",
             "wafr_pillar_id": 6,
             "wafr_pillar_prompt": "Please answer the following questions for the Sustainability pillar of Well-Architected Framework Review (WAFR) Financial Services Industry Lens Lens.\nQuestions:\nSUS 1: How do you select the most sustainable Regions in your area?\nSUS 2: How do you address data sovereignty regulations for location of sustainable Region?\nSUS 3: How do you select a Region to optimize financial services workloads for sustainability?\nSUS 4: How do you prioritize business critical functions over non-critical functions?\nSUS 5: How do you define, review, and optimize network access patterns for sustainability?\nSUS 6: How do you monitor and minimize resource usage for financial services workloads?\nSUS 7: How do you optimize batch processing components for sustainability?\nSUS 8: How do you optimize your resource usage?\nSUS 9: How do you optimize areas of your code that use the most resources?\nSUS 10: Have you selected the storage class with the lowest carbon footprint?\nSUS 11: Do you store processed data or raw data?\nSUS 12: What is your process for benchmarking instances for existing workloads?\nSUS 13: Can you complete workloads over more time while not violating your maximum SLA?\nSUS 14: Do you have multi-architecture images for grid computing systems?\nSUS 15: What is your testing process for workloads that require floating point precision?\nSUS 16: Do you achieve a judicious use of development resources?\nSUS 17: How do you minimize your test, staging, sandbox instances?\nSUS 18: How do you define the minimum requirement in response time for customers in order to maximize your green SLA?"
+        },
+        {
+            "wafr_lens": "Generative AI Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/genai",
+            "wafr_pillar": "Operational Excellence",
+            "wafr_pillar_id": 1,
+            "wafr_pillar_prompt": "Please answer the following questions for the Operational Excellence pillar of the Well-Architected Framework Review (WAFR) Generative AI Lens.\nQuestions:\nOPS 1: How do you achieve and verify consistent model output quality?\nOPS 2: How do you monitor and manage the operational health of your applications?\nOPS 3: How do you maintain traceability for your models, prompts, and assets?\nOPS 4: How do you automate the lifecycle management of your generative AI workloads?\nOPS 5: How do you determine when to execute Gen AI model customization?"
+        },
+        {
+            "wafr_lens": "Generative AI Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/genai",
+            "wafr_pillar": "Security",
+            "wafr_pillar_id": 2,
+            "wafr_pillar_prompt": "Please answer the following questions for the Security pillar of the Well-Architected Framework Review (WAFR) Generative AI Lens.\nQuestions:\nSEC 1: How do you manage access to generative AI endpoints?\nSEC 2: How do you prevent generative AI applications from generating harmful, biased, or factually incorrect responses?\nSEC 3: How do you monitor and audit events associated with your generative AI workloads?\nSEC 4: How do you secure system and user prompts?\nSEC 5: How do you prevent excessive agency for models?\nSEC 6: How do you detect and remediate data poisoning risks?"
+        },
+        {
+            "wafr_lens": "Generative AI Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/genai",
+            "wafr_pillar": "Reliability",
+            "wafr_pillar_id": 3,
+            "wafr_pillar_prompt": "Please answer the following questions for the Reliability pillar of the Well-Architected Framework Review (WAFR) Generative AI Lens.\nQuestions:\nREL 1: How do you determine throughput quotas (or needs) for foundation models?\nREL 2: How do you maintain reliable communication between different components of your generative AI architecture?\nREL 3: How do you implement remediation actions for generative AI workload loops, retries, and failures?\nREL 4: How do you maintain versions for prompts, model parameters, and foundation models?\nREL 5: How do you distribute inference workloads over multiple regions of availability?\nREL 6: How do you design high-performance distributed computation tasks to maximize successful completion?"
+        },
+        {
+            "wafr_lens": "Generative AI Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/genai",
+            "wafr_pillar": "Performance Efficiency",
+            "wafr_pillar_id": 4,
+            "wafr_pillar_prompt": "Please answer the following questions for the Performance efficiency pillar of the Well-Architected Framework Review (WAFR) Generative AI Lens.\nQuestions:\nPERF 1: How do you capture and improve the performance of your generative AI models in production?\nPERF 2: How do you verify your generative AI workload maintains acceptable performance levels?\nPERF 3: How do you optimize computational resources required for high-performance distributed computation tasks?\nPERF 4: How do you improve the performance of data retrieval systems?"
+        },
+        {
+            "wafr_lens": "Generative AI Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/genai",
+            "wafr_pillar": "Cost Optimization",
+            "wafr_pillar_id": 5,
+            "wafr_pillar_prompt": "Please answer the following questions for the Cost Optimization pillar of the Well-Architected Framework Review (WAFR) Generative AI Lens.\nQuestions:\nCOST 1: How do you select the appropriate model to optimize costs?\nCOST 2: How do you select a cost-effective pricing model (for example, provisioned, on-demand, hosted, or batch)?\nCOST 3: How do you engineer prompts to optimize cost?\nCOST 4: How do you optimize vector stores for cost?\nCOST 5: How do you optimize agent workflows for cost?"
+        },
+        {
+            "wafr_lens": "Generative AI Lens",
+            "wafr_lens_alias": "arn:aws:wellarchitected::aws:lens/genai",
+            "wafr_pillar": "Sustainability",
+            "wafr_pillar_id": 6,
+            "wafr_pillar_prompt": "Please answer the following questions for the Sustainability pillar of the Well-Architected Framework Review (WAFR) Generative AI Lens.\nQuestions:\nSUS 1: How do you minimize the computational resources needed for training, customizing, and hosting generative AI workloads?\nSUS 2: How can you optimize data processing and storage to minimize energy consumption and maximize efficiency?\nSUS 3: How do you maintain model efficiency and resource optimization when working with large language models?"
         }
     ]
 }
