@@ -427,7 +427,7 @@ def invoke_bedrock(streaming, claude_prompt_body, pillar_review_outputFilename, 
                     pillar_review_output += chunk
                     
                 # Uncomment next line if you would like to see response files for each question too. 
-                # output_bucket.put_object(Key=pillar_review_output_filename, Body=bytes(pillar_review_output, encoding='utf-8'))
+                # bucket.put_object(Key=pillar_review_output_filename, Body=bytes(pillar_review_output, encoding='utf-8'))
                 
                 return pillar_review_output
                 
