@@ -22,6 +22,7 @@ KNOWLEDGE_BASE_ID=os.environ['KNOWLEDGE_BASE_ID']
 LLM_MODEL_ID=os.environ['LLM_MODEL_ID']
 BEDROCK_SLEEP_DURATION = os.environ['BEDROCK_SLEEP_DURATION']
 BEDROCK_MAX_TRIES = os.environ['BEDROCK_MAX_TRIES']
+GUARDRAIL_ID = os.environ['GUARDRAIL_ID']
 
 bedrock_config = Config(connect_timeout=120, region_name=REGION, read_timeout=120, retries={'max_attempts': 0})
 bedrock_client = boto3.client('bedrock-runtime',region_name=REGION)
@@ -158,6 +159,7 @@ def lambda_handler(event, context):
         return_response['llm_model_id'] = LLM_MODEL_ID
         return_response['wafr_workload_id'] = wafr_workload_id
         return_response['lens_alias'] = lenses
+        return_response['guardrail_id'] = GUARDRAIL_ID
     
     except Exception as error:
         update_analysis_status (data, error)

@@ -141,7 +141,8 @@ def lambda_handler(event, context):
             pillar_prompts['llm_model_id'] =  data ['llm_model_id']                
             pillar_prompts['region'] = data['region']
             pillar_prompts['input_pillar'] = item
-            
+            pillar_prompts['guardrail_id'] =  data ['guardrail_id']                
+
             return_response['wafr_accelerator_run_items'] = data ['wafr_accelerator_run_items']
     
             pillar_prompts[item] = prompt_file_locations

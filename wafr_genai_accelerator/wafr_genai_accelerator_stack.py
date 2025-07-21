@@ -74,7 +74,7 @@ class WafrGenaiAcceleratorStack(Stack):
         
         # Flags for optional features
         optional_features = optional_features or {}
-          
+
         # STANDBY_REPLICAS disabled by default
         if(optional_features.get("openSearchReducedRedundancy", "True") == "False"):
             STANDBY_REPLICAS = opensearchserverless.VectorCollectionStandbyReplicas.ENABLED
@@ -190,7 +190,7 @@ class WafrGenaiAcceleratorStack(Stack):
         WAFR_REFERENCE_DOCS_BUCKET = wafrReferenceDocsBucket.bucket_name
 
         #Uploading WAFR docs to the corresponding S3 bucket [wafrReferenceDocsBucket]
-        wafrReferenceDeploy = s3deploy.BucketDeployment(self, "uploadwellarchitecteddocs1",
+        wafrReferenceDeploy = s3deploy.BucketDeployment(self, "uploadwellarchitecteddocs",
             sources=[s3deploy.Source.asset('well_architected_docs')],
             destination_bucket=wafrReferenceDocsBucket,
             memory_limit = 2048
@@ -818,8 +818,7 @@ class WafrGenaiAcceleratorStack(Stack):
                 "PARAMETER_3_LOGIN_PAGE" : PARAMETER_3_LOGIN_PAGE, 
                 "PARAMETER_COGNITO_USER_POOL_ID" : PARAMETER_COGNITO_USER_POOL_ID ,
                 "PARAMETER_COGNITO_USER_POOL_CLIENT_ID" : PARAMETER_COGNITO_USER_POOL_CLIENT_ID,
-                "GUARDRAIL_ID" : GUARDRAIL_ID or 'Not Selected', 
-                
+                "GUARDRAIL_ID" : GUARDRAIL_ID or 'Not Selected' 
             },
             role = replaceUITokensFunctionRole,
             events=[lambda_events.S3EventSource(bucket=wafrUIBucket, events=[s3.EventType.OBJECT_CREATED], filters=[s3.NotificationKeyFilter(prefix="tokenized-pages/", suffix=".py")])]
@@ -891,6 +890,15 @@ class WafrGenaiAcceleratorStack(Stack):
                             ],
                             effect=iam.Effect.ALLOW
                         ),
+                        *([iam.PolicyStatement(
+                            actions=[
+                                "bedrock:ApplyGuardrail"
+                            ],
+                            resources=[
+                                f"arn:aws:bedrock:{self.region}:{self.account}:guardrail/{GUARDRAIL_ID}"
+                            ],
+                            effect=iam.Effect.ALLOW
+                        )] if GUARDRAIL_ID else []),
                         iam.PolicyStatement(
                             actions=[
                                 "sqs:SendMessage",
@@ -955,7 +963,8 @@ class WafrGenaiAcceleratorStack(Stack):
                 "WAFR_ACCELERATOR_RUNS_DD_TABLE_NAME": WAFR_RUNS_TABLE,
                 "WAFR_PROMPT_DD_TABLE_NAME": WAFR_PILLAR_QUESTIONS_PROMPT_TABLE,
                 "BEDROCK_SLEEP_DURATION" : "60",
-                "BEDROCK_MAX_TRIES" : "5"
+                "BEDROCK_MAX_TRIES" : "5",
+                "GUARDRAIL_ID" : GUARDRAIL_ID or 'Not Selected' 
             },
             role = startWafrReviewFunctionRole,
             reserved_concurrent_executions=1
@@ -1145,7 +1154,8 @@ class WafrGenaiAcceleratorStack(Stack):
                 "START_WAFR_REVIEW_STATEMACHINE_ARN": state_machine.state_machine_arn,
                 "BEDROCK_SLEEP_DURATION" : "60",
                 "BEDROCK_MAX_TRIES" : "5",
-                "WAFR_REFERENCE_DOCS_BUCKET" : WAFR_REFERENCE_DOCS_BUCKET
+                "WAFR_REFERENCE_DOCS_BUCKET" : WAFR_REFERENCE_DOCS_BUCKET,
+                "GUARDRAIL_ID" : GUARDRAIL_ID or 'Not Selected' 
             },
             role = startWafrReviewFunctionRole,
             reserved_concurrent_executions=1

@@ -23,6 +23,7 @@ START_WAFR_REVIEW_STATEMACHINE_ARN = os.environ['START_WAFR_REVIEW_STATEMACHINE_
 BEDROCK_SLEEP_DURATION = int(os.environ['BEDROCK_SLEEP_DURATION'])
 BEDROCK_MAX_TRIES = int(os.environ['BEDROCK_MAX_TRIES'])
 WAFR_REFERENCE_DOCS_BUCKET = os.environ['WAFR_REFERENCE_DOCS_BUCKET']
+GUARDRAIL_ID = os.environ['GUARDRAIL_ID']
 
 dynamodb = boto3.resource('dynamodb')
 bedrock_config = Config(connect_timeout=120, region_name=REGION, read_timeout=120, retries={'max_attempts': 0})
@@ -111,6 +112,10 @@ def do_quick_analysis (data, context):
     logger.info(f"LLM_MODEL_ID: {LLM_MODEL_ID}")
     logger.info(f"BEDROCK_SLEEP_DURATION: {BEDROCK_SLEEP_DURATION}")
     logger.info(f"BEDROCK_MAX_TRIES: {BEDROCK_MAX_TRIES}")
+    if(GUARDRAIL_ID):
+        logger.info(f"GUARDRAIL_ID: {GUARDRAIL_ID}" )
+    else:
+        logger.info(f"GUARDRAIL_ID nNot specified" )
     
     wafr_accelerator_runs_table = dynamodb.Table(WAFR_ACCELERATOR_RUNS_DD_TABLE_NAME)
     wafr_prompts_table = dynamodb.Table(WAFR_PROMPT_DD_TABLE_NAME)
@@ -207,7 +212,7 @@ def do_quick_analysis (data, context):
 
             logger.debug (f"do_quick_analysis checkpoint 6.{pillar_counter}")
             
-            logger.info ("pillar_id" + str(response['Items'][0]['wafr_pillar_id']))#
+            logger.info ("pillar_id: " + str(response['Items'][0]['wafr_pillar_id']))#
             
             pillarResponse = {
                 'pillar_name': item,
@@ -383,10 +388,18 @@ def invoke_bedrock(streaming, claude_prompt_body, pillar_review_output_filename,
     while retries <= max_retries:
         try:
             if(streaming):
-                streaming_response = bedrock_client.invoke_model_with_response_stream(
-                    modelId=LLM_MODEL_ID,
-                    body=claude_prompt_body,
-                )
+                if(GUARDRAIL_ID == "Not Selected"):
+                    streaming_response = bedrock_client.invoke_model_with_response_stream(
+                        modelId=LLM_MODEL_ID,
+                        body=claude_prompt_body
+                    )
+                else: # Use guardrails
+                    streaming_response = bedrock_client.invoke_model_with_response_stream(
+                        modelId=LLM_MODEL_ID,
+                        body=claude_prompt_body,
+                        guardrailIdentifier= GUARDRAIL_ID,
+                        guardrailVersion="DRAFT"
+                    )
                 
                 logger.debug (f"invoke_bedrock checkpoint 1.{retries}")
                 stream = streaming_response.get("body")
@@ -406,6 +419,18 @@ def invoke_bedrock(streaming, claude_prompt_body, pillar_review_output_filename,
                     modelId=LLM_MODEL_ID,
                     body=claude_prompt_body
                 )
+                if(GUARDRAIL_ID == "Not Selected"):
+                    non_streaming_response = bedrock_client.invoke_model(
+                        modelId=LLM_MODEL_ID,
+                        body=claude_prompt_body
+                    )
+                else: # Use guardrails
+                    non_streaming_response = bedrock_client.invoke_model(
+                        modelId=LLM_MODEL_ID,
+                        body=claude_prompt_body,
+                        guardrailIdentifier=GUARDRAIL_ID,
+                        guardrailVersion="DRAFT"
+                    )
 
                 response_json = json.loads(non_streaming_response["body"].read().decode("utf-8"))
         

@@ -55,7 +55,8 @@ def lambda_handler(event, context):
     llm_model_id = data['llm_model_id']
     wafr_workload_id = data['wafr_accelerator_run_items'] ['wafr_workload_id']
     lens_alias = data['wafr_accelerator_run_items'] ['lens_alias']
-    
+    guardrail_id = data['guardrail_id']
+
     return_response = {}
     
     logger.debug (f"generate_pillar_question_response checkpoint 0")
@@ -124,7 +125,7 @@ def lambda_handler(event, context):
             pillar_specfic_question_id = pillar_question_object["pillar_specfic_question_id"]
             pillar_specfic_prompt_question = pillar_question_object["pillar_specfic_prompt_question"]
             
-            pillar_question_review_output = invoke_bedrock(streaming, current_prompt, pillar_review_prompt_ouput_filename, extract_output_bucket, bedrock_client, llm_model_id)
+            pillar_question_review_output = invoke_bedrock(streaming, current_prompt, pillar_review_prompt_ouput_filename, extract_output_bucket, bedrock_client, llm_model_id, guardrail_id)
             
             logger.debug (f"pillar_question_review_output: {pillar_question_review_output}")
 
@@ -322,8 +323,8 @@ def get_question_id_mappings(wafr_prompts_table_name, wafr_lens, input_pillar):
     logger.debug (f"response wafr_pillar_id: "  + str(response['Items'][0]['wafr_pillar_id']))
     logger.debug (f"response wafr_pillar_prompt: " + response['Items'][0]['wafr_pillar_prompt'])
     pillar_specific_prompt_question = response['Items'][0]['wafr_pillar_prompt']
-    
-    line_counter = 0 
+
+    line_counter = 0
     # Before rubnning this, ensure wafr prompt row has only questions and no text before it. Otherwise, the below fails.
     for line in response['Items'][0]['wafr_pillar_prompt'].splitlines():
     	line_counter = line_counter + 1
@@ -393,7 +394,7 @@ def update_wafr_question_response(wa_client, wafr_workload_id, lens_alias, pilla
     finally:    
         logger.info (f"update_wafr_question_response Inside finally")
         
-def invoke_bedrock(streaming, claude_prompt_body, pillar_review_outputFilename, bucket, bedrock_client, llm_model_id):
+def invoke_bedrock(streaming, claude_prompt_body, pillar_review_outputFilename, bucket, bedrock_client, llm_model_id, guardrail_id):
 
     pillar_review_output = ""
     retries = 0
@@ -401,31 +402,49 @@ def invoke_bedrock(streaming, claude_prompt_body, pillar_review_outputFilename, 
     pillar_review_output = ""
     while retries < max_retries:
         try:
+
             if(streaming):
-                streaming_response = bedrock_client.invoke_model_with_response_stream(
-                    modelId=llm_model_id,
-                    body=claude_prompt_body,
-                )
-                
+                if(guardrail_id == "Not Selected"):
+                    streaming_response = bedrock_client.invoke_model_with_response_stream(
+                        modelId=llm_model_id,
+                        body=claude_prompt_body                     
+                    )
+                else: # Use guardrails
+                    streaming_response = bedrock_client.invoke_model_with_response_stream(
+                        modelId=llm_model_id,
+                        body=claude_prompt_body,
+                        guardrailIdentifier= guardrail_id,
+                        guardrailVersion="DRAFT"
+                    )
+                    logger.info (f"Used Guardrail Id: {guardrail_id}")
+
                 logger.info (f"invoke_bedrock checkpoint 1.{retries}")
                 stream = streaming_response.get("body")
                 
-                logger.debug (f"invoke_bedrock checkpoint 2")
+                logger.info (f"invoke_bedrock checkpoint 2.{retries}")
         
                 for chunk in parse_stream(stream):
                     pillar_review_output += chunk
                     
                 # Uncomment next line if you would like to see response files for each question too. 
-                #bucket.put_object(Key=pillar_review_outputFilename, Body=bytes(pillar_review_output, encoding='utf-8'))
+                # output_bucket.put_object(Key=pillar_review_output_filename, Body=bytes(pillar_review_output, encoding='utf-8'))
                 
                 return pillar_review_output
                 
             else:
-                non_streaming_response = bedrock_client.invoke_model(
-                    modelId=llm_model_id,
-                    body=claude_prompt_body,
-                )
-                
+                if(guardrail_id == "Not Selected"):
+                    non_streaming_response = bedrock_client.invoke_model(
+                        modelId=llm_model_id,
+                        body=claude_prompt_body
+                    )
+                else: # Use guardrails
+                    non_streaming_response = bedrock_client.invoke_model(
+                        modelId=llm_model_id,
+                        body=claude_prompt_body,
+                        guardrailIdentifier=guardrail_id,
+                        guardrailVersion="DRAFT"
+                    )
+                    logger.debug (f"Used Guardrail Id: {guardrail_id}")
                 response_json = json.loads(non_streaming_response["body"].read().decode("utf-8"))
         
                 logger.debug (response_json)
