@@ -48,6 +48,11 @@ _* Note: The above list of features can be individually enabled and disabled by 
 	* Titan Text Embeddings V2
 	* Claude 3-5 Sonnet
 
+* The machine used to build and deploy the sample needs to have the following installed:
+	* [AWS CDK prerequisites](https://docs.aws.amazon.com/cdk/v2/guide/prerequisites.html) with [Python 3.9+](https://www.python.org/downloads/)
+ 	* [AWS Cloud Development Kit (AWS CDK) v2](https://docs.aws.amazon.com/cdk/v2/guide/getting-started.html)
+  	* [Docker CE](https://docs.docker.com/engine/)
+  	
 ### Cloning Repository
 
 Clone the repository to your local directory. You can use the following command:<br/> 
